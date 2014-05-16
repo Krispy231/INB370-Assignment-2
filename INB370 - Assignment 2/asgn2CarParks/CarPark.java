@@ -48,6 +48,8 @@ public class CarPark {
 	public CarPark() {
 		this(Constants.DEFAULT_MAX_CAR_SPACES,Constants.DEFAULT_MAX_SMALL_CAR_SPACES,
 				Constants.DEFAULT_MAX_MOTORCYCLE_SPACES,Constants.DEFAULT_MAX_QUEUE_SIZE);
+		
+		System.out.println("test");
 	}
 	
 	/**
@@ -59,6 +61,7 @@ public class CarPark {
 	 * @param maxQueueSize maximum number of vehicles allowed to queue
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
+		
 	}
 
 	/**
