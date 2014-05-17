@@ -52,6 +52,11 @@ public abstract class Vehicle {
 	 * @throws VehicleException if arrivalTime is <= 0 
 	 */
 	public Vehicle(String vehID,int arrivalTime) throws VehicleException  {
+		
+		if(arrivalTime <= 0){
+			throw new VehicleException("Arrival time must be 1 or greater.");
+		}
+		
 	}
 
 	/**
@@ -64,6 +69,22 @@ public abstract class Vehicle {
 	 *         or if intendedDuration is less than the minimum prescribed in asgnSimulators.Constants
 	 */
 	public void enterParkedState(int parkingTime, int intendedDuration) throws VehicleException {
+		int departureTime = parkingTime + intendedDuration;
+		
+		if(isParked() == true)
+		{
+			throw new VehicleException("Vehicle is already parked.");
+		}else if(isQueued() == true)
+		{
+			throw new VehicleException("Vehicle is queueing");
+		}else if(parkingTime <= 0)
+		{
+			throw new VehicleException("Parking time must be positive.");
+		}else if(intendedDuration < Constants.MINIMUM_STAY)
+		{
+			throw new VehicleException("Vehicle must park longer than minimum time limit.");
+		}
+		
 	}
 	
 	/**
@@ -72,6 +93,13 @@ public abstract class Vehicle {
 	 * @throws VehicleException if the vehicle is already in a queued or parked state
 	 */
 	public void enterQueuedState() throws VehicleException {
+		if(isParked() == true)
+		{
+			throw new VehicleException("Vehicle is already parked.");
+		}else if(isQueued() == true)
+		{
+			throw new VehicleException("Vehicle is already in queue.");
+		}
 	}
 	
 	/**
@@ -81,6 +109,7 @@ public abstract class Vehicle {
 	 * 		  state or if the revised departureTime < parkingTime
 	 */
 	public void exitParkedState(int departureTime) throws VehicleException {
+		
 	}
 
 	/**
@@ -92,6 +121,16 @@ public abstract class Vehicle {
 	 *  exitTime is not later than arrivalTime for this vehicle
 	 */
 	public void exitQueuedState(int exitTime) throws VehicleException {
+		if(isParked() != true)
+		{
+			throw new VehicleException("Vehicle is parked.");
+		}else if(isQueued() != true)
+		{
+			throw new VehicleException("Vehicle is not in queue.");
+		}else if(exitTime < getArrivalTime())
+		{
+			throw new VehicleException("Arrival time is later than exit time.");
+		}
 	}
 	
 	/**
@@ -147,6 +186,10 @@ public abstract class Vehicle {
 	 * @return true if satisfied, false if never in parked state or if queuing time exceeds max allowable 
 	 */
 	public boolean isSatisfied() {
+		if(isParked() == true)
+		{
+			return true;
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -162,6 +205,10 @@ public abstract class Vehicle {
 	 * @return true if vehicle was or is in a parked state, false otherwise 
 	 */
 	public boolean wasParked() {
+		if(isParked() == true)
+		{
+			return true;
+		}
 	}
 
 	/**
@@ -169,5 +216,9 @@ public abstract class Vehicle {
 	 * @return true if vehicle was or is in a queued state, false otherwise 
 	 */
 	public boolean wasQueued() {
+		if(isQueued() == true)
+		{
+			return true;
+		}
 	}
 }

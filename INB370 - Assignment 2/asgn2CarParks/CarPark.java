@@ -41,6 +41,9 @@ import asgn2Vehicles.Vehicle;
 public class CarPark {
 
 	
+	//private static final int maxCarSpaces = 100;
+	private int carParkSpaces;
+
 	/**
 	 * CarPark constructor sets the basic size parameters. 
 	 * Uses default parameters
@@ -60,6 +63,7 @@ public class CarPark {
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
 		
+		carParkSpaces = maxCarSpaces;
 	}
 
 	/**
@@ -95,6 +99,12 @@ public class CarPark {
 	 * @return true if car park empty, false otherwise
 	 */
 	public boolean carParkEmpty() {
+		if(getNumCars() == 0 && getNumMotorCycles() == 0)
+		{
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	/**
@@ -102,6 +112,12 @@ public class CarPark {
 	 * @return true if car park full, false otherwise
 	 */
 	public boolean carParkFull() {
+		if(getNumCars() >= carParkSpaces)
+		{
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	/**
