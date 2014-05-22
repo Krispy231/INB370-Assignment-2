@@ -145,12 +145,11 @@ public class CarPark {
 	 */
 	public void enterQueue(Vehicle v) throws SimulationException, VehicleException {
 	
-		if(numQueuedVehicles >= maxQueueSize){
+		if(vehiclesInQueue.size() >= maxQueueSize){
 			throw new VehicleException("The queue is full.");
 		}
 		else{
 			vehiclesInQueue.add(v);
-			numQueuedVehicles++;
 		}
 	}
 	
@@ -170,7 +169,6 @@ public class CarPark {
 		}
 		else{
 			vehiclesInQueue.remove(v);
-			numQueuedVehicles--;
 		}
 	}
 	
@@ -194,6 +192,7 @@ public class CarPark {
 	 * @return number of cars in car park, including small cars
 	 */
 	public int getNumCars() {
+		return vehiclesInCarPark.size();		
 	}
 	
 	/**
@@ -267,7 +266,7 @@ public class CarPark {
 	 * @return number of vehicles in the queue
 	 */
 	public int numVehiclesInQueue() {
-		return numQueuedVehicles;
+		return vehiclesInQueue.size();
 	}
 	
 	/**
@@ -300,7 +299,7 @@ public class CarPark {
 	 * @return true if queue empty, false otherwise
 	 */
 	public boolean queueEmpty() {
-		if(numQueuedVehicles == 0){
+		if(vehiclesInQueue.size() == 0){
 			return true;
 		}
 		else{
@@ -313,7 +312,7 @@ public class CarPark {
 	 * @return true if queue full, false otherwise
 	 */
 	public boolean queueFull() {
-		if(numQueuedVehicles > maxQueueSize){
+		if(vehiclesInQueue.size() > maxQueueSize){
 			return true;
 		}
 		else{
@@ -328,6 +327,14 @@ public class CarPark {
 	 * @return true if space available for v, false otherwise 
 	 */
 	public boolean spacesAvailable(Vehicle v) {
+		int parkedCars = vehiclesInCarPark.size();
+		int availableSpaces = maxCarSpaces - parkedCars;
+		
+		if(availableSpaces > 0){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 
