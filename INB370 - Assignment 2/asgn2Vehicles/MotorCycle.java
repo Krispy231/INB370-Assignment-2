@@ -21,6 +21,9 @@ import asgn2Exceptions.VehicleException;
  */
 public class MotorCycle extends Vehicle {
 
+	private String vehID;
+	private int arrivalTime;
+
 	/**
 	 * MotorCycle constructor 
 	 * @param vehID - identification number or plate of the vehicle
@@ -29,5 +32,7 @@ public class MotorCycle extends Vehicle {
 	 * @throws VehicleException if arrivalTime is <= 0  
 	 */
 	public MotorCycle(String vehID, int arrivalTime) throws VehicleException {
+		this.vehID = vehID;
+		this.arrivalTime = arrivalTime;
 	}
 }

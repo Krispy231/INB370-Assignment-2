@@ -42,7 +42,14 @@ public class CarPark {
 
 	
 	//private static final int maxCarSpaces = 100;
-	private int carParkSpaces;
+	private int maxCarSpaces;
+	private int maxMotorCycleSpaces;
+	private int maxQueueSize;
+	private int maxSmallCarSpaces;
+	
+	
+	private int numQueuedVehicles;
+	ArrayList<Integer> vehiclesInCarPark = new ArrayList<Integer>();
 
 	/**
 	 * CarPark constructor sets the basic size parameters. 
@@ -63,7 +70,10 @@ public class CarPark {
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
 		
-		carParkSpaces = maxCarSpaces;
+		this.maxCarSpaces = maxCarSpaces;
+		this.maxSmallCarSpaces = maxSmallCarSpaces;
+		this.maxMotorCycleSpaces = maxMotorCycleSpaces;
+		this.maxQueueSize = maxQueueSize;		
 	}
 
 	/**
@@ -84,6 +94,7 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is currently queued or parked
 	 */
 	public void archiveNewVehicle(Vehicle v) throws SimulationException {
+	
 	}
 	
 	/**
@@ -112,7 +123,7 @@ public class CarPark {
 	 * @return true if car park full, false otherwise
 	 */
 	public boolean carParkFull() {
-		if(getNumCars() >= carParkSpaces)
+		if(getNumCars() >= maxCarSpaces)
 		{
 			return true;
 		}else{
@@ -129,6 +140,13 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state 
 	 */
 	public void enterQueue(Vehicle v) throws SimulationException, VehicleException {
+	
+		if(numQueuedVehicles >= maxQueueSize){
+			throw new VehicleException("The queue is full.");
+		}
+		else{
+			numQueuedVehicles++;
+		}
 	}
 	
 	
@@ -142,6 +160,12 @@ public class CarPark {
 	 * constraints are violated
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
+		if(isQueued()){
+			
+		}
+	else{
+		numQueuedVehicles--;
+		}
 	}
 	
 	/**
@@ -237,6 +261,7 @@ public class CarPark {
 	 * @return number of vehicles in the queue
 	 */
 	public int numVehiclesInQueue() {
+		return numQueuedVehicles;
 	}
 	
 	/**
@@ -250,6 +275,7 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state or timing constraints are violated
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
+	
 	}
 
 	/**
@@ -268,6 +294,12 @@ public class CarPark {
 	 * @return true if queue empty, false otherwise
 	 */
 	public boolean queueEmpty() {
+		if(numQueuedVehicles == 0){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	/**
@@ -275,6 +307,12 @@ public class CarPark {
 	 * @return true if queue full, false otherwise
 	 */
 	public boolean queueFull() {
+		if(numQueuedVehicles > maxQueueSize){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	/**
