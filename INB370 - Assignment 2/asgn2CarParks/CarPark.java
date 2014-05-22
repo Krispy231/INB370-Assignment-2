@@ -49,7 +49,11 @@ public class CarPark {
 	
 	
 	private int numQueuedVehicles;
-	ArrayList<Integer> vehiclesInCarPark = new ArrayList<Integer>();
+	ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
 
 	/**
 	 * CarPark constructor sets the basic size parameters. 
@@ -145,6 +149,7 @@ public class CarPark {
 			throw new VehicleException("The queue is full.");
 		}
 		else{
+			vehiclesInQueue.add(v);
 			numQueuedVehicles++;
 		}
 	}
@@ -163,8 +168,9 @@ public class CarPark {
 		if(isQueued()){
 			
 		}
-	else{
-		numQueuedVehicles--;
+		else{
+			vehiclesInQueue.remove(v);
+			numQueuedVehicles--;
 		}
 	}
 	
