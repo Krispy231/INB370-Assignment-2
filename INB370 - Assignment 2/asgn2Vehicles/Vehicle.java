@@ -50,8 +50,9 @@ public abstract class Vehicle {
 	private int parkingTime;
 	private int intendedDuration;
 	
-
 	boolean parked = false;
+	public boolean wasParked = false;
+	public boolean wasQueued = false;
 	
 	/**
 	 * Vehicle Constructor 
@@ -201,6 +202,7 @@ public abstract class Vehicle {
 	 */
 	public boolean isParked() {
 		if(parked = true){
+			wasParked = true;
 			return true;
 		}else{
 			return false;
@@ -247,7 +249,7 @@ public abstract class Vehicle {
 	 * @return true if vehicle was or is in a parked state, false otherwise 
 	 */
 	public boolean wasParked() {
-		if(isParked() == true)
+		if(wasParked == true)
 		{
 			return true;
 		}
@@ -261,7 +263,7 @@ public abstract class Vehicle {
 	 * @return true if vehicle was or is in a queued state, false otherwise 
 	 */
 	public boolean wasQueued() {
-		if(isQueued() == true)
+		if(wasQueued == true)
 		{
 			return true;
 		}
