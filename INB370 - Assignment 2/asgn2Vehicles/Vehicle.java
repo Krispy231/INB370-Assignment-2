@@ -61,6 +61,11 @@ public abstract class Vehicle {
 	 *        either queued, given entry to the car park or forced to leave
 	 * @throws VehicleException if arrivalTime is <= 0 
 	 */
+	
+	public Vehicle(){
+		
+	}
+	
 	public Vehicle(String vehID,int arrivalTime) throws VehicleException  {
 		
 		if(arrivalTime <= 0){
