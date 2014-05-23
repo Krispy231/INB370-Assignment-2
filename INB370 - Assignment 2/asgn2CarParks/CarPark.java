@@ -54,6 +54,15 @@ public class CarPark {
 	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> past = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> spaces = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> queue = new ArrayList<Vehicle>();
+	private int numSmallCars;
+	private int count;
+	private int numCars;
+	private int numMotorCycles;
+	private int numDissatisfied;
+	private String status;
 
 	/**
 	 * CarPark constructor sets the basic size parameters. 
