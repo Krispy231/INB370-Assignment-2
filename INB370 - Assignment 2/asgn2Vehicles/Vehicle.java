@@ -214,6 +214,7 @@ public abstract class Vehicle {
 	 * @return true if vehicle is in a queued state, false otherwise 
 	 */
 	public static boolean isQueued() {
+		return false;
 	}
 	
 	/**
@@ -241,6 +242,7 @@ public abstract class Vehicle {
 	 */
 	@Override
 	public String toString() {
+		return "";
 	}
 
 	/**
@@ -249,8 +251,7 @@ public abstract class Vehicle {
 	 * @return true if vehicle was or is in a parked state, false otherwise 
 	 */
 	public boolean wasParked() {
-		if(wasParked == true)
-		{
+		if(wasParked == true) {
 			return true;
 		}
 		else{
@@ -263,13 +264,11 @@ public abstract class Vehicle {
 	 * @return true if vehicle was or is in a queued state, false otherwise 
 	 */
 	public boolean wasQueued() {
-		if(wasQueued == true)
-		{
+		if(wasQueued == true) {
 			return true;
 		}
 		else{
 			return false;
-		}
 		}
 	}
 }

@@ -8,6 +8,8 @@
  * 21/04/2014
  * 
  */
+
+ // Test for GitHub
 package asgn2CarParks;
 
 import java.util.ArrayList;
@@ -164,7 +166,7 @@ public class CarPark {
 	 * constraints are violated
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
-		if(isQueued()){
+		if(Vehicle.isQueued()){
 			
 		}
 		else{

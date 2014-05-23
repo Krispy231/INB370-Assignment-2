@@ -86,10 +86,14 @@ public class SimulationRunner {
 		try {
 			s = new Simulator();
 			l = new Log();
-		} catch (IOException | SimulationException e1) {
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			System.exit(-1);
+		} catch (SimulationException e1) {
 			e1.printStackTrace();
 			System.exit(-1);
 		}
+		
 		
 		//TODO: Implement Argument Processing 
 		
