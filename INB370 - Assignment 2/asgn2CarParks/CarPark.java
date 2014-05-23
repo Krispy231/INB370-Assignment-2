@@ -60,7 +60,7 @@ public class CarPark {
 	private int numCars;
 	private int numMotorCycles;
 	private int numDissatisfied;
-	private String status;
+	private String parkStatus;
 
 	/**
 	 * CarPark constructor sets the basic size parameters. 
@@ -252,8 +252,8 @@ public class CarPark {
 				str += "M";
 			}
 		}
-		str += this.status;
-		this.status="";
+		str += this.parkStatus;
+		this.parkStatus="";
 		return str+"\n";
 	}
 	
