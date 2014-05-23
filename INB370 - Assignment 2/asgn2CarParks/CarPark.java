@@ -73,7 +73,7 @@ public class CarPark {
 	 * @param maxQueueSize maximum number of vehicles allowed to queue
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
-		
+	
 		this.maxCarSpaces = maxCarSpaces;
 		this.maxSmallCarSpaces = maxSmallCarSpaces;
 		this.maxMotorCycleSpaces = maxMotorCycleSpaces;
@@ -165,10 +165,10 @@ public class CarPark {
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
 		if(Vehicle.isQueued()){
-			
+			vehiclesInQueue.remove(v);
 		}
 		else{
-			vehiclesInQueue.remove(v);
+			
 		}
 	}
 	

@@ -20,6 +20,9 @@ import org.junit.Test;
  * @author hogan
  *
  */
+
+public CarPark carParkTest;
+
 public class CarParkTests {
 
 	/**
@@ -27,6 +30,7 @@ public class CarParkTests {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		carParkTest = new CarPark(maxCarSpaces,maxSmallCarSpaces, maxMotorCycleSpaces, maxQueueSize);
 	}
 
 	/**
