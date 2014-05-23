@@ -63,7 +63,7 @@ public abstract class Vehicle {
 	 */
 	
 	public Vehicle(){
-		
+		// Void
 	}
 	
 	public Vehicle(String vehID,int arrivalTime) throws VehicleException  {
