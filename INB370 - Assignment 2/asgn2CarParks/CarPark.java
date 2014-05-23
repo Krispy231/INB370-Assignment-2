@@ -201,6 +201,7 @@ public class CarPark {
 	 * 			a small car space
 	 */
 	public int getNumMotorCycles() {
+		return 0;
 	}
 	
 	/**
@@ -209,6 +210,7 @@ public class CarPark {
 	 * 		   not occupying a small car space. 
 	 */
 	public int getNumSmallCars() {
+		return 0;
 	}
 	
 	/**
@@ -343,6 +345,7 @@ public class CarPark {
 	 */
 	@Override
 	public String toString() {
+		return "";
 	}
 
 	/**
