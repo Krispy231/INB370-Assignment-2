@@ -50,6 +50,8 @@ public abstract class Vehicle {
 	private int parkingTime;
 	private int intendedDuration;
 	
+	private String vehicleState;
+	
 	boolean parked = false;
 	public boolean wasParked = false;
 	public boolean wasQueued = false;
@@ -74,6 +76,9 @@ public abstract class Vehicle {
 		
 		this.vehID = vehID;
 		this.arrivalTime = arrivalTime;
+		
+		// Vehicle arrives and enters the queue.
+		enterQueuedState();
 		
 	}
 
@@ -105,7 +110,9 @@ public abstract class Vehicle {
 		{
 			throw new VehicleException("Vehicle must park longer than minimum time limit.");
 		}
-		else{parked = true;}
+		else{
+			parked = true;
+			}
 	}
 	
 	/**
@@ -141,6 +148,9 @@ public abstract class Vehicle {
 		}else if(departureTime < getParkingTime())
 		{
 			throw new VehicleException("Cannot leave before the vehicle was able to park.");
+		}
+		
+		else{
 		}
 		
 	}
