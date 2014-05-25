@@ -34,6 +34,8 @@ public class CarParkTests {
 	int maxMotorCycleSpaces= 10;
 	int maxQueueSize = 5;
 	
+	String vehicleStatus;
+	
 	ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
@@ -95,6 +97,7 @@ public class CarParkTests {
 	public void testCarParkFull() {
 		vehiclesInCarPark.clear();
 		maxCarSpaces = 5;
+		
 		vehiclesInCarPark.add(0, null);
 		vehiclesInCarPark.add(1, null);
 		vehiclesInCarPark.add(2, null);
@@ -133,7 +136,13 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testGetNumCars() {
-		fail("Not yet implemented"); // TODO
+		vehiclesInCarPark.add(0, null);
+		vehiclesInCarPark.add(1, null);
+		vehiclesInCarPark.add(2, null);
+		vehiclesInCarPark.add(3, null);
+		vehiclesInCarPark.add(4, null);
+		
+		assertEquals(5, CarPark.getNumCars());
 	}
 
 	/**
@@ -157,7 +166,6 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testGetStatus() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	/**

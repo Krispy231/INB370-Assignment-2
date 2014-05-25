@@ -55,10 +55,14 @@ public class CarTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testCar() {
-		fail("Not yet implemented"); // TODO
+	public void testCar() throws VehicleException {
+		String vehID = "test1";
+		int arrivalTime = 11;
+		boolean small = true;
+		testCar = new Car(vehID, arrivalTime, small);
 	}
 
 	/**
