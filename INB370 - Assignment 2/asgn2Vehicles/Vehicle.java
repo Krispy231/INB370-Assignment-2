@@ -44,17 +44,19 @@ import asgn2Simulators.Constants;
  */
 public abstract class Vehicle {
 	
-	private String vehID;	
+	private String vehID;
+	// When the vehicle enters the Queue.
 	private int arrivalTime;
+	// When the vehicle exits the Queue.
+	private int exitTime;
 	private int departureTime;
 	private int parkingTime;
 	private int intendedDuration;
 	
-	private String vehicleState;
-	
 	boolean parked = false;
 	public boolean wasParked = false;
 	public boolean wasQueued = false;
+	private String vehicleState;
 	
 	/**
 	 * Vehicle Constructor 
@@ -111,7 +113,11 @@ public abstract class Vehicle {
 			throw new VehicleException("Vehicle must park longer than minimum time limit.");
 		}
 		else{
+			// Used for the isParked() method.
 			parked = true;
+			
+			// Defines the vehicles  state as parked.
+			vehicleState = "parked";
 			}
 	}
 	
@@ -128,6 +134,10 @@ public abstract class Vehicle {
 		{
 			throw new VehicleException("Vehicle is already in queue.");
 		}
+		
+		else{
+			vehicleState = "queued";
+			}
 	}
 	
 	/**
@@ -150,7 +160,8 @@ public abstract class Vehicle {
 			throw new VehicleException("Cannot leave before the vehicle was able to park.");
 		}
 		
-		else{
+		else if(vehicleState == "parked"){
+			vehicleState = "unparked";
 		}
 		
 	}
@@ -164,6 +175,7 @@ public abstract class Vehicle {
 	 *  exitTime is not later than arrivalTime for this vehicle
 	 */
 	public void exitQueuedState(int exitTime) throws VehicleException {
+		this.exitTime = exitTime;
 		if(isParked() == true)
 		{
 			throw new VehicleException("Vehicle is parked.");
@@ -216,7 +228,7 @@ public abstract class Vehicle {
 	 * @return true if the vehicle is in a parked state; false otherwise
 	 */
 	public boolean isParked() {
-		if(parked = true){
+		if(vehicleState == "parked"){
 			wasParked = true;
 			return true;
 		}else{
@@ -228,9 +240,14 @@ public abstract class Vehicle {
 	 * Boolean status indicating whether vehicle is currently queued
 	 * @return true if vehicle is in a queued state, false otherwise 
 	 */
-	public static boolean isQueued() {
-		return false;
-	}
+	public boolean isQueued() {
+		if(vehicleState == "queued"){
+			wasQueued = true;
+			return true;
+		}else{
+			return false;
+		}
+		}
 	
 	/**
 	 * Boolean status indicating whether customer is satisfied or not
@@ -240,11 +257,8 @@ public abstract class Vehicle {
 	 * @return true if satisfied, false if never in parked state or if queuing time exceeds max allowable 
 	 */
 	public boolean isSatisfied() {		
-		if(isParked() == true)
+		if(isParked() == true || wasParked() == true)
 		{
-			return true;
-		}
-		else if(wasParked() == true){
 			return true;
 		}
 		else{
