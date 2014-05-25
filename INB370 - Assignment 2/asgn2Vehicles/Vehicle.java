@@ -10,6 +10,7 @@
  */
 package asgn2Vehicles;
 
+import asgn2CarParks.CarPark;
 import asgn2Exceptions.VehicleException;
 import asgn2Simulators.Constants;
 
@@ -56,7 +57,7 @@ public abstract class Vehicle {
 	boolean parked = false;
 	public boolean wasParked = false;
 	public static boolean wasQueued = false;
-	private static String vehicleState;
+	public static String vehicleState;
 	
 	/**
 	 * Vehicle Constructor 
@@ -81,7 +82,6 @@ public abstract class Vehicle {
 		
 		// Vehicle arrives and enters the queue.
 		enterQueuedState();
-		
 	}
 
 	/**
@@ -134,7 +134,6 @@ public abstract class Vehicle {
 		{
 			throw new VehicleException("Vehicle is already in queue.");
 		}
-		
 		else{
 			vehicleState = "queued";
 			}
@@ -154,7 +153,7 @@ public abstract class Vehicle {
 			throw new VehicleException("Vehicle isn't parked.");
 		}else if(isQueued() == true)
 		{
-			throw new VehicleException("Vehicle isn't parked.");
+			throw new VehicleException("Vehicle is queue.");
 		}else if(departureTime < getParkingTime())
 		{
 			throw new VehicleException("Cannot leave before the vehicle was able to park.");
@@ -185,6 +184,10 @@ public abstract class Vehicle {
 		}else if(exitTime < getArrivalTime())
 		{
 			throw new VehicleException("Arrival time is later than exit time.");
+		}
+		
+		else if(vehicleState == "queued"){
+			vehicleState = "unqueued";
 		}
 	}
 	
