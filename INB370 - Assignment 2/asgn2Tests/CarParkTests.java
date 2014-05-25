@@ -12,9 +12,14 @@ package asgn2Tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import asgn2CarParks.CarPark;
+import asgn2Vehicles.Vehicle;
 
 /**
  * @author hogan
@@ -22,12 +27,25 @@ import org.junit.Test;
  */
 
 public class CarParkTests {
-
+	
+	public CarPark carParkTest;
+	int maxCarSpaces = 100;
+	int maxSmallCarSpaces = 30;
+	int maxMotorCycleSpaces= 10;
+	int maxQueueSize = 5;
+	
+	ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		carParkTest = new CarPark(maxCarSpaces, maxSmallCarSpaces, maxMotorCycleSpaces, maxQueueSize);
 	}
 
 	/**
@@ -66,7 +84,8 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testCarParkEmpty() {
-		fail("Not yet implemented"); // TODO
+		vehiclesInCarPark.clear();
+		assertEquals(0, vehiclesInCarPark.size());
 	}
 
 	/**
@@ -74,7 +93,15 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testCarParkFull() {
-		fail("Not yet implemented"); // TODO
+		vehiclesInCarPark.clear();
+		maxCarSpaces = 5;
+		vehiclesInCarPark.add(0, null);
+		vehiclesInCarPark.add(1, null);
+		vehiclesInCarPark.add(2, null);
+		vehiclesInCarPark.add(3, null);
+		vehiclesInCarPark.add(4, null);
+		
+		assertEquals(5, vehiclesInCarPark.size());
 	}
 
 	/**
@@ -146,7 +173,7 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testNumVehiclesInQueue() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(CarPark.numVehiclesInQueue())
 	}
 
 	/**

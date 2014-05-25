@@ -16,17 +16,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import asgn2CarParks.CarPark;
+import asgn2Exceptions.VehicleException;
+import asgn2Vehicles.Car;
+import asgn2Vehicles.Vehicle;
+
 /**
  * @author hogan
  *
  */
 public class CarTests {
+	
+	public Car testCar;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		String vehID = "test1";
+		int arrivalTime = 11;
+		boolean small = true;
+		testCar = new Car(vehID, arrivalTime, small);
 	}
 
 	/**
@@ -54,10 +65,11 @@ public class CarTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testIsSmall() {
-		fail("Not yet implemented"); // TODO
+	public void testIsSmall() throws VehicleException {	
+		assertTrue(Car.isSmall());
 	}
 
 }

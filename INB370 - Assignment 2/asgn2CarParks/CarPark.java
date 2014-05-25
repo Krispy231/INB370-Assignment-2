@@ -49,15 +49,15 @@ public class CarPark {
 	
 	
 	private int numQueuedVehicles;
-	ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
+	private ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
+	private static ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
+	private ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
+	private ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
+	private ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
 	
-	ArrayList<Vehicle> past = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> spaces = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> queue = new ArrayList<Vehicle>();
+	private ArrayList<Vehicle> past = new ArrayList<Vehicle>();
+	private ArrayList<Vehicle> spaces = new ArrayList<Vehicle>();
+	private ArrayList<Vehicle> queue = new ArrayList<Vehicle>();
 	
 	private int numSmallCars;
 	private int count;
@@ -100,6 +100,8 @@ public class CarPark {
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
+		
+		Vehicle.exitParkedState();
 	}
 		
 	/**
@@ -278,7 +280,7 @@ public class CarPark {
 	 * Simple status showing number of vehicles in the queue 
 	 * @return number of vehicles in the queue
 	 */
-	public int numVehiclesInQueue() {
+	public static int numVehiclesInQueue() {
 		return vehiclesInQueue.size();
 	}
 	
