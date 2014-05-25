@@ -49,7 +49,7 @@ public class CarPark {
 	
 	
 	private int numQueuedVehicles;
-	ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
+	static ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
 	static ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
@@ -204,7 +204,7 @@ public class CarPark {
 	 * Simple getter for number of cars in the car park 
 	 * @return number of cars in car park, including small cars
 	 */
-	public int getNumCars() {
+	public static int getNumCars() {
 		return vehiclesInCarPark.size();		
 	}
 	
