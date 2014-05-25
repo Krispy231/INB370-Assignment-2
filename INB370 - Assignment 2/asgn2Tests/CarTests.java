@@ -16,10 +16,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import asgn2CarParks.CarPark;
 import asgn2Exceptions.VehicleException;
 import asgn2Vehicles.Car;
-import asgn2Vehicles.Vehicle;
 
 /**
  * @author hogan

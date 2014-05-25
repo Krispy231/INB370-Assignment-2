@@ -173,7 +173,8 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testNumVehiclesInQueue() {
-		assertEquals(CarPark.numVehiclesInQueue())
+		//assertEquals(CarPark.numVehiclesInQueue())
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**

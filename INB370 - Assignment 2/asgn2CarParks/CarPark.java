@@ -49,22 +49,22 @@ public class CarPark {
 	
 	
 	private int numQueuedVehicles;
-	private ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
-	private static ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
-	private ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
-	private ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
-	private ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
+	static ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
 	
-	private ArrayList<Vehicle> past = new ArrayList<Vehicle>();
-	private ArrayList<Vehicle> spaces = new ArrayList<Vehicle>();
-	private ArrayList<Vehicle> queue = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> past = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> spaces = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> queue = new ArrayList<Vehicle>();
 	
 	private int numSmallCars;
 	private int count;
 	private int numCars;
 	private int numMotorCycles;
 	private int numDissatisfied;
-	private String status;
+	private String vehicleStatus;
 
 	/**
 	 * CarPark constructor sets the basic size parameters. 
@@ -101,7 +101,7 @@ public class CarPark {
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
 		
-		Vehicle.exitParkedState();
+		//Vehicle.exitParkedState();
 	}
 		
 	/**
@@ -214,7 +214,7 @@ public class CarPark {
 	 * 			a small car space
 	 */
 	public int getNumMotorCycles() {
-		return 0;
+		return this.numMotorCycles;
 	}
 	
 	/**
@@ -223,14 +223,14 @@ public class CarPark {
 	 * 		   not occupying a small car space. 
 	 */
 	public int getNumSmallCars() {
-		return 0;
+		return this.numSmallCars;
 	}
 	
 	/**
 	 * Method used to provide the current status of the car park. 
 	 * Uses private status String set whenever a transition occurs. 
 	 * Example follows (using high probability for car creation). At time 262, 
-	 * we have 276 vehicles existing, 91 in car park (P), 84 cars in car park (C), 
+	 * we have 276 vehicles existing, 91 spaces in car park (P), 84 cars in car park (C), 
 	 * of which 14 are small (S), 7 MotorCycles in car park (M), 48 dissatisfied (D),
 	 * 176 archived (A), queue of size 9 (CCCCCCCCC), and on this iteration we have 
 	 * seen: car C go from Parked (P) to Archived (A), C go from queued (Q) to Parked (P),
@@ -241,13 +241,13 @@ public class CarPark {
 	public String getStatus(int time) {
 		String str = time +"::"
 		+ this.count + "::" 
-		+ "P:" + this.spaces.size() + "::"
+		+ "P:" + this.maxCarSpaces + "::"
 		+ "C:" + this.numCars + "::S:" + this.numSmallCars 
 		+ "::M:" + this.numMotorCycles 
 		+ "::D:" + this.numDissatisfied 
-		+ "::A:" + this.past.size()  
-		+ "::Q:" + this.queue.size(); 
-		for (Vehicle v : this.queue) {
+		+ "::A:" + this.departArchive.size()  
+		+ "::Q:" + this.vehiclesInQueue.size(); 
+		for (Vehicle v : this.vehiclesInQueue) {
 			if (v instanceof Car) {
 				if (((Car)v).isSmall()) {
 					str += "S";
@@ -258,8 +258,8 @@ public class CarPark {
 				str += "M";
 			}
 		}
-		str += this.status;
-		this.status="";
+		str += this.vehicleStatus;
+		this.vehicleStatus="";
 		return str+"\n";
 	}
 	
