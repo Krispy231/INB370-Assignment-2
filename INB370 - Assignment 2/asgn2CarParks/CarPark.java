@@ -64,7 +64,6 @@ public class CarPark {
 	private int numCars;
 	private int numMotorCycles;
 	private int numDissatisfied;
-	private String vehicleStatus;
 
 	/**
 	 * CarPark constructor sets the basic size parameters. 
@@ -101,7 +100,9 @@ public class CarPark {
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
 		
+	else{
 		//Vehicle.exitParkedState();
+	}
 	}
 		
 	/**
@@ -177,6 +178,11 @@ public class CarPark {
 	 * constraints are violated
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
+		if(Vehicle.isQueued() == false){
+			throw new VehicleException("Vehicle is not in queue.");
+		}else if(Vehicle.vehicleState != "queued"){
+			throw new VehicleException("Vehicle is not in queue.");
+		}
 		if(Vehicle.isQueued()){
 			vehiclesInQueue.remove(v);
 		}
@@ -295,7 +301,20 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state or timing constraints are violated
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
-	
+		if(getNumCars() >= maxCarSpaces){
+			throw new VehicleException("No parks available.");
+		} 
+		else if(getNumSmallCars() >= maxSmallCarSpaces){
+			throw new VehicleException("No appropriate parks available.");
+		}
+		else if(Vehicle.vehicleState != "parked"){
+			throw new VehicleException("Vehicle is not in the appropriate state.");
+		}
+		else{
+			int parkingTime = time;
+			Vehicle.enterParkedState(parkingTime, intendedDuration);
+			vehiclesInCarPark.add(v);
+		}
 	}
 
 	/**
@@ -380,6 +399,14 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is not in car park
 	 */
 	public void unparkVehicle(Vehicle v,int departureTime) throws VehicleException, SimulationException {
+		if(Vehicle.vehicleState != "parked"){
+			throw new VehicleException("Vehicle is not parked!");
+		}
+		
+	else{
+		Vehicle.exitParkedState(departureTime);
+		vehiclesInCarPark.remove(v);
+	}
 	}
 	
 	/**

@@ -16,6 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import asgn2Exceptions.VehicleException;
 import asgn2Vehicles.MotorCycle;
 import asgn2Vehicles.Vehicle;
 
@@ -49,9 +50,10 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.MotorCycle#MotorCycle(java.lang.String, int)}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testMotorCycle() {
+	public void testMotorCycle() throws VehicleException {
 		vehID = "test02";
 		arrivalTime = 100;
 		
@@ -60,10 +62,11 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#Vehicle(java.lang.String, int)}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testVehicle() {
-		testVehicle = new Vehicle(vehID, arrivalTime);
+	public void testVehicle() throws VehicleException {
+		testVehicle = new MotorCycle(vehID, arrivalTime);
 	}
 
 	/**
