@@ -493,6 +493,7 @@ public class CarPark {
 	/**
 	 * Simple status showing whether queue is empty
 	 * @return true if queue empty, false otherwise
+	 * @author Christopher Koren
 	 */
 	public boolean queueEmpty() {
 		if(vehiclesInQueue.size() == 0){
@@ -506,6 +507,7 @@ public class CarPark {
 	/**
 	 * Simple status showing whether queue is full
 	 * @return true if queue full, false otherwise
+	 * @author Christopher Koren
 	 */
 	public boolean queueFull() {
 		if(vehiclesInQueue.size() > maxQueueSize){
@@ -521,16 +523,40 @@ public class CarPark {
 	 * type in the car park under the parking policy in the class header.  
 	 * @param v Vehicle to be stored. 
 	 * @return true if space available for v, false otherwise 
+	 * @author Christopher Koren
 	 */
 	public boolean spacesAvailable(Vehicle v) {
-		int parkedCars = vehiclesParked.size();
-		int availableSpaces = maxCarSpaces - parkedCars;
-		
-		if(availableSpaces > 0){
-			return true;
-		}else{
-			return false;
+		// Test for Cars.
+		if(v instanceof Car){
+			// Test for small cars.
+			if(((Car)v).isSmall()){
+				if(smallCarsParked.size() < maxSmallCarSpaces){
+					return true;
+				}
+				else if(carsParked.size() < maxCarSpaces){
+					return true;
+				}
+			}
+			
+			// Test for normal cars.
+			else if(((Car)v).isSmall() == false){
+				if(carsParked.size() < maxCarSpaces){
+					return true;
+				}
+			}
 		}
+		
+		// Test for MotorCycles.
+		else if(v instanceof MotorCycle){
+			if(motorCyclesParked.size() < maxMotorCycleSpaces){
+				return true;
+			}
+			else if(smallCarsParked.size() < maxSmallCarSpaces){
+				return true;
+			}
+		}
+		// Else return false. I.e. No available parks.
+		return false;
 	}
 
 
