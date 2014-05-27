@@ -19,6 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import asgn2CarParks.CarPark;
+import asgn2Exceptions.SimulationException;
+import asgn2Exceptions.VehicleException;
+import asgn2Simulators.Constants;
 import asgn2Vehicles.Car;
 import asgn2Vehicles.MotorCycle;
 import asgn2Vehicles.Vehicle;
@@ -74,12 +77,11 @@ public class CarParkTests {
 
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
-	 */
+	 */ 
 	@Test
-	public void testArchiveDepartingVehicles() {
-		fail("Not yet implemented"); // TODO
+	public void testArchiveDepartingVehiclesIsParked() {
 	}
-
+	
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
 	 */
@@ -90,19 +92,76 @@ public class CarParkTests {
 
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * @author Matthew Wheeler
+	 * @throws VehicleException 
 	 */
-	@Test
-	public void testArchiveQueueFailures() {
-		fail("Not yet implemented"); // TODO
+	@Test (expected = VehicleException.class)
+	public void testArchiveQueueFailuresBeforeZero() throws VehicleException {
+		int time = -1;
+		carParkTest.archiveQueueFailures(time);
 	}
 
+	/**
+	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * @author Matthew Wheeler
+	 * @throws VehicleException 
+	 */
+	@Test
+	public void testArchiveQueueFailuresAtZero() throws VehicleException {
+		int time = 0;
+		carParkTest.archiveQueueFailures(time);
+	}
+	
+	/**
+	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * @author Matthew Wheeler
+	 * @throws VehicleException 
+	 */
+	@Test
+	public void testArchiveQueueFailuresAfterZero() throws VehicleException {
+		int time = 1;
+		carParkTest.archiveQueueFailures(time);
+	}
+	
+	/**
+	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * @author Matthew Wheeler
+	 * @throws VehicleException 
+	 */
+	@Test
+	public void testArchiveQueueFailuresBeforeClosing() throws VehicleException {
+		int time = Constants.CLOSING_TIME - 1;
+		carParkTest.archiveQueueFailures(time);
+	}
+	
+	/**
+	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * @author Matthew Wheeler
+	 * @throws VehicleException 
+	 */
+	@Test (expected = VehicleException.class)
+	public void testArchiveQueueFailuresAtClosing() throws VehicleException {
+		int time = Constants.CLOSING_TIME;
+		carParkTest.archiveQueueFailures(time);
+	}
+	
+	/**
+	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * @author Matthew Wheeler
+	 * @throws VehicleException 
+	 */
+	@Test (expected = VehicleException.class)
+	public void testArchiveQueueFailuresAfterClosing() throws VehicleException {
+		int time = Constants.CLOSING_TIME + 1;
+		carParkTest.archiveQueueFailures(time);
+	}
+	
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#carParkEmpty()}.
 	 */
 	@Test
 	public void testCarParkEmpty() {
-		vehiclesInCarPark.clear();
-		assertEquals(0, vehiclesInCarPark.size());
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -110,16 +169,7 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testCarParkFull() {
-		vehiclesInCarPark.clear();
-		maxCarSpaces = 5;
-		
-		vehiclesInCarPark.add(0, testCar);
-		vehiclesInCarPark.add(1, testSmallCar);
-		vehiclesInCarPark.add(2, testCar);
-		vehiclesInCarPark.add(3, testCar);
-		vehiclesInCarPark.add(4, testCar);
-		
-		assertEquals(5, vehiclesInCarPark.size());
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -127,7 +177,7 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testEnterQueue() {
-		//
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -148,17 +198,10 @@ public class CarParkTests {
 
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#getNumCars()}.
-	 * @author Christopher Koren
 	 */
 	@Test
 	public void testGetNumCars() {
-		vehiclesInCarPark.add(0, null);
-		vehiclesInCarPark.add(1, null);
-		vehiclesInCarPark.add(2, null);
-		vehiclesInCarPark.add(3, null);
-		vehiclesInCarPark.add(4, null);
-		
-		assertEquals(5, carParkTest.getNumCars());
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -166,9 +209,7 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testGetNumMotorCycles() {
-		int numMotorCycles = 3;
-		
-		assertEquals(3, getNumMotorCycles());
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -184,6 +225,7 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testGetStatus() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**

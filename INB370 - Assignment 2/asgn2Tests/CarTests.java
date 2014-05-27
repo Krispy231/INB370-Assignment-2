@@ -57,12 +57,38 @@ public class CarTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
 	 * @throws VehicleException 
+	 * @author Matthew Wheeler
+	 */
+	@Test (expected = VehicleException.class)
+	public void testArrivalTimeBefore() throws VehicleException {
+		String vehID = "test1";
+		int arrivalTime = -1;
+		boolean small = true;
+		testCar = new Car(vehID, arrivalTime, small);
+	}
+	
+	/**
+	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
+	 * @throws VehicleException 
+	 * @author Matthew Wheeler
+	 */
+	@Test
+	public void testArrivalTimeAtZero() throws VehicleException {
+		String vehID = "test1";
+		int arrivalTime = 0;
+		boolean small = true;
+		testCar = new Car(vehID, arrivalTime, small);
+	}
+	
+	/**
+	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
+	 * @throws VehicleException 
 	 * @author Christopher Koren
 	 */
 	@Test
-	public void testCar() throws VehicleException {
+	public void testArrivalTimeAfter() throws VehicleException {
 		String vehID = "test1";
-		int arrivalTime = 11;
+		int arrivalTime = 1;
 		boolean small = true;
 		testCar = new Car(vehID, arrivalTime, small);
 	}
@@ -73,8 +99,26 @@ public class CarTests {
 	 * @author Christopher Koren 
 	 */
 	@Test
-	public void testIsSmall() throws VehicleException {	
+	public void testIsSmallTrue() throws VehicleException {
+		String vehID = "testSmallTrue";
+		int arrivalTime = 11;
+		boolean small = true;	
+		testCar = new Car("vehID", arrivalTime, small);
 		assertTrue(testCar.isSmall());
+	}
+	
+	/**
+	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * @throws VehicleException
+	 * @author Matthew Wheeler
+	 */
+	@Test
+	public void testIsSmallFalse() throws VehicleException {
+		String vehID = "testSmallFalse";
+		int arrivalTime = 11;
+		boolean small = false;	
+		testCar = new Car("vehID", arrivalTime, small);
+		assertFalse(testCar.isSmall());
 	}
 
 }
