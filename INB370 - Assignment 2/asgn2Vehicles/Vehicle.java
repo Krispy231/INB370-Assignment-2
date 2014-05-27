@@ -79,7 +79,7 @@ public abstract class Vehicle {
 		
 		this.vehID = vehID;
 		this.arrivalTime = arrivalTime;
-		
+		vehicleState = "arriving";
 		// Vehicle arrives and enters the queue.
 		enterQueuedState();
 	}
@@ -95,6 +95,7 @@ public abstract class Vehicle {
 	 */
 	public void enterParkedState(int parkingTime, int intendedDuration) throws VehicleException {
 		exitTime = parkingTime + intendedDuration;
+		System.out.println(vehicleState);
 		
 		this.parkingTime = parkingTime;
 		//this.intendedDuration = intendedDuration;
@@ -136,9 +137,7 @@ public abstract class Vehicle {
 		{
 			throw new VehicleException("Vehicle is already in queue.");
 		}
-		else{
 			vehicleState = "queued";
-			}
 	}
 	
 	/**
