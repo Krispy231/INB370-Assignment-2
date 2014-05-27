@@ -100,7 +100,6 @@ public class Simulator {
 		double z = this.rng.nextGaussian(); 
 		double x = z*this.sdStay + this.meanStay;
 		int duration = ((int) x);
-		System.out.println(duration);
 		if (duration > Constants.MINIMUM_STAY)
 		{
 			return duration;

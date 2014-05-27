@@ -111,7 +111,8 @@ public abstract class Vehicle {
 		{
 			throw new VehicleException("Parking time must be positive.");
 		}
-		if(intendedDuration <= Constants.MINIMUM_STAY)
+		System.out.println(intendedDuration);
+		if(intendedDuration < Constants.MINIMUM_STAY)
 		{
 			throw new VehicleException("Vehicle must park longer than minimum time limit.");
 		}

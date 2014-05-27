@@ -485,8 +485,6 @@ public class CarPark {
 				numCars++;
 				if(carsParked.size() < maxCarSpaces){
 					carsParked.add(v);
-					System.out.println(time);
-					System.out.println(intendedDuration);
 					v.enterParkedState(time, intendedDuration);
 				}
 			}
@@ -608,6 +606,7 @@ public class CarPark {
 					return true;
 				}
 			}
+			return false;
 		}
 		
 		// Test for MotorCycles.
