@@ -61,7 +61,8 @@ public class Simulator {
 		if ((meanStay <0) || (sdStay <0)) {
 			throw new SimulationException(" Invalid mean or standard deviation");
 		}
-
+		
+		
 		this.meanStay = meanStay;
 		this.sdStay = sdStay;
 		this.seed = seed;
@@ -99,7 +100,15 @@ public class Simulator {
 		double z = this.rng.nextGaussian(); 
 		double x = z*this.sdStay + this.meanStay;
 		int duration = ((int) x);
-		return Math.max(duration,Constants.MINIMUM_STAY);
+		System.out.println(duration);
+		if (duration > Constants.MINIMUM_STAY)
+		{
+			return duration;
+		}
+		else
+		{
+			return Constants.MINIMUM_STAY;
+		}
 	}
 	
 	/**

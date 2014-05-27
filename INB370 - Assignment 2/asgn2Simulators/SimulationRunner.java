@@ -66,7 +66,7 @@ public class SimulationRunner {
 				this.carPark.processQueue(time,this.sim);
 			}
 			// new vehicles from minute 1 until the last hour
-			if (newVehiclesAllowed(time)) { 
+			if (newVehiclesAllowed(time)) {
 				this.carPark.tryProcessNewVehicles(time,this.sim);
 			}
 			//Log progress 

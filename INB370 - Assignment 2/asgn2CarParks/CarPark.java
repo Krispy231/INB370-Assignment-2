@@ -485,6 +485,8 @@ public class CarPark {
 				numCars++;
 				if(carsParked.size() < maxCarSpaces){
 					carsParked.add(v);
+					System.out.println(time);
+					System.out.println(intendedDuration);
 					v.enterParkedState(time, intendedDuration);
 				}
 			}
@@ -647,6 +649,7 @@ public class CarPark {
 		if((smallCarsParked.size() + carsParked.size() + motorCyclesParked.size()) >= totalSpaces){
 			throw new SimulationException("The car park is full.");
 		}
+		int intendedDuration = sim.setDuration();
 		
 		if(sim.newCarTrial()){
 			totalVehicleCount++;
@@ -680,7 +683,7 @@ public class CarPark {
 					totalVehicleCount++;
 					
 					if(spacesAvailable(newCar)){
-						parkVehicle(newCar, time, newCar.getParkingTime());
+						parkVehicle(newCar, time, intendedDuration);
 						carParkStatus += "|S:N>P|";
 						
 					}

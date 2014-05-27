@@ -52,7 +52,7 @@ public abstract class Vehicle {
 	private int exitTime;
 	private int departureTime;
 	private int parkingTime;
-	private int intendedDuration;
+	public int intendedDuration;
 	
 	boolean parked = false;
 	public boolean wasParked = false;
@@ -94,31 +94,33 @@ public abstract class Vehicle {
 	 *         or if intendedDuration is less than the minimum prescribed in asgnSimulators.Constants
 	 */
 	public void enterParkedState(int parkingTime, int intendedDuration) throws VehicleException {
-		int departureTime = parkingTime + intendedDuration;
+		exitTime = parkingTime + intendedDuration;
 		
 		this.parkingTime = parkingTime;
-		this.intendedDuration = intendedDuration;
+		//this.intendedDuration = intendedDuration;
 		
 		if(isParked() == true)
 		{
 			throw new VehicleException("Vehicle is already parked.");
-		}else if(isQueued() == true)
+		}
+		if(isQueued() == true)
 		{
 			throw new VehicleException("Vehicle is queueing");
-		}else if(parkingTime <= 0)
+		}
+		if(parkingTime <= 0)
 		{
 			throw new VehicleException("Parking time must be positive.");
-		}else if(intendedDuration < Constants.MINIMUM_STAY)
+		}
+		if(intendedDuration <= Constants.MINIMUM_STAY)
 		{
 			throw new VehicleException("Vehicle must park longer than minimum time limit.");
 		}
-		else{
-			// Used for the isParked() method.
-			parked = true;
-			
-			// Defines the vehicles  state as parked.
-			vehicleState = "parked";
-			}
+	
+		// Used for the isParked() method.
+		parked = true;
+		
+		// Defines the vehicles  state as parked.
+		vehicleState = "parked";
 	}
 	
 	/**
