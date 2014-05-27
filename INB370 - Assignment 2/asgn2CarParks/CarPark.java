@@ -52,13 +52,14 @@ public class CarPark {
 	ArrayList<Vehicle> smallVehiclesParked = new ArrayList<Vehicle>();
 	
 	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> successfulParkArchive = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> failArchive = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> successfulParkArchive = new ArrayList<Vehicle>(); // Finished Parking
+	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();	 // Queue too full
+	ArrayList<Vehicle> failArchive = new ArrayList<Vehicle>();			 // Waited too long
 	
 	ArrayList<Vehicle> past = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> spaces = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> queue = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> allVehicles = new ArrayList<Vehicle>();
 	
 	private String idString;
 	private int carIdCount;
@@ -68,7 +69,7 @@ public class CarPark {
 	private int numSmallCars;
 	private int numMotorCycles;
 	private int numDissatisfied;
-	private int count;
+	private int count = 0;
 
 	/**
 	 * CarPark constructor sets the basic size parameters. 
@@ -77,6 +78,11 @@ public class CarPark {
 	public CarPark() {
 		this(Constants.DEFAULT_MAX_CAR_SPACES,Constants.DEFAULT_MAX_SMALL_CAR_SPACES,
 				Constants.DEFAULT_MAX_MOTORCYCLE_SPACES,Constants.DEFAULT_MAX_QUEUE_SIZE);
+		
+		while (allVehicles.size() > 0)
+		{
+			allVehicles.remove(0);
+		}
 	}
 	
 	/**
@@ -104,14 +110,22 @@ public class CarPark {
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
-		if(v.isParked() == false){
-			throw new VehicleException("Vehicle was not parked.");
-		}
-		else if(/*Vehicle(s) are NOT in Car park*/){
-			throw new VehicleException("The vehicle(s) are not currently in the CarPark.");
-		}
-		else{
-			successfulParkArchive.add(v);
+		int v = 0;
+		while (v < allVehicles.size())
+		{	
+			Vehicle usedVehicle = allVehicles.get(v);
+			if(usedVehicle.isParked() == false){
+				throw new VehicleException("Vehicle was not parked.");
+			}
+		
+			if(usedVehicle.isSatisfied()){
+				throw new VehicleException("The vehicle has already left the CarPark.");
+			}
+				
+			if (force = false)
+			{
+				successfulParkArchive.add(usedVehicle);
+			}
 		}
 	}
 		
@@ -140,7 +154,7 @@ public class CarPark {
 	 * @throws VehicleException if one or more vehicles not in the correct state or if timing constraints are violated
 	 */
 	public void archiveQueueFailures(int time) throws VehicleException {
-		if(vehiclesInQueue[i].isParked()){
+		/*if(vehiclesInQueue(i).isParked()){
 		if(v.isParked()){
 		if(v.isParked()){
 			
@@ -149,7 +163,7 @@ public class CarPark {
 			failArchive.add();
 			v.failedQueueArchive.add();
 			v.failedQueueArchive.add();
-		}
+		}*/
 	}
 	
 	/**
@@ -287,7 +301,7 @@ public class CarPark {
 		+ "C:" + this.numCars + "::S:" + this.numSmallCars 
 		+ "::M:" + this.numMotorCycles 
 		+ "::D:" + this.numDissatisfied 
-		+ "::A:" + this.departArchive.size()  
+		+ "::A:" + this.successfulParkArchive.size()  
 		+ "::Q:" + this.vehiclesInQueue.size(); 
 		for (Vehicle v : this.vehiclesInQueue) {
 			if (v instanceof Car) {
@@ -300,8 +314,10 @@ public class CarPark {
 				str += "M";
 			}
 		}
-		str += this.vehicleStatus;
-		this.vehicleStatus="";
+		// for each change
+		// {
+			str += this.setVehicleMsg(null, str, str);
+		// }
 		return str+"\n";
 	}
 	
@@ -340,17 +356,15 @@ public class CarPark {
 		if(getNumCars() >= maxCarSpaces){
 			throw new VehicleException("No parks available.");
 		} 
-		else if(getNumSmallCars() >= maxSmallCarSpaces){
+		if(getNumSmallCars() >= maxSmallCarSpaces){
 			throw new VehicleException("No appropriate parks available.");
 		}
-		else if(v.vehicleState != "parked"){
-			throw new VehicleException("Vehicle is not in the appropriate state.");
-		}
-		else{
+		//if(v.vehicleState != "parked"){
+		//	throw new VehicleException("Vehicle is not in the appropriate state.");
+		//}
 			int parkingTime = time;
 			v.enterParkedState(parkingTime, intendedDuration);
 			vehiclesParked.add(v);
-		}
 	}
 
 	/**
