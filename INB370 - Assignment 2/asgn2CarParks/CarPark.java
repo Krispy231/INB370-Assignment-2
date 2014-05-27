@@ -210,9 +210,7 @@ public class CarPark {
 		else if(v.isParked() == true){
 			throw new SimulationException("The vehicle is already parked.");
 		}
-		else{
 			dissatifiedVehicles.add(v);
-		}
 	}
 	
 	/**
@@ -297,7 +295,6 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state 
 	 */
 	public void enterQueue(Vehicle v) throws SimulationException, VehicleException {
-	
 		if(vehiclesInQueue.size() >= maxQueueSize){
 			throw new VehicleException("The queue is full.");
 		}
@@ -331,7 +328,7 @@ public class CarPark {
 		else if(exitTime < 0){
 			throw new VehicleException("Vehicle cannot exit at a negative time.");
 		}
-		else if(exitTime> Constants.CLOSING_TIME){
+		else if(exitTime > Constants.CLOSING_TIME){
 			throw new VehicleException("Car Park is closed.");
 		}
 		v.exitQueuedState(exitTime);
@@ -515,8 +512,10 @@ public class CarPark {
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
 		archiveQueueFailures(time);
         
+		final int tempQueueSize = vehiclesInQueue.size();
         Vehicle v;
-        for (int i = 0; i < vehiclesInQueue.size(); i++){
+        outerloop:
+        for (int i = 0; i < tempQueueSize; i++){
 
                 v = vehiclesInQueue.get(0);
                 if (!v.isQueued()){
@@ -531,6 +530,10 @@ public class CarPark {
                 
                 // If there is an available space, park the vehicle.
                 else if (spacesAvailable(v)){  
+                		if (!spacesAvailable(v)){
+                			throw new SimulationException("No suitable parkin places.");
+                		}
+                		
                         exitQueue(v, time);
                         parkVehicle(v, time, sim.setDuration());
                        
@@ -546,8 +549,8 @@ public class CarPark {
                         	carParkStatus += "|M:Q>P|";
                         }
                 }
-                else if(!spacesAvailable(v)){
-                	throw new SimulationException("There are no suitable spaces to park the first in queue");
+                else{
+                	 break outerloop;
                 }
         }
 	}
@@ -645,13 +648,16 @@ public class CarPark {
 	 * @throws VehicleException if vehicle creation violates constraints 
 	 */
 	public void tryProcessNewVehicles(int time,Simulator sim) throws VehicleException, SimulationException {
+		int intendedDuration = sim.setDuration();
+		
 		if((smallCarsParked.size() + carsParked.size() + motorCyclesParked.size()) >= totalSpaces){
 			throw new SimulationException("The car park is full.");
 		}
-		int intendedDuration = sim.setDuration();
+		if(intendedDuration < Constants.MINIMUM_STAY || time < 0){
+			throw new VehicleException("Invalid timing constraints.");
+		}
 		
 		if(sim.newCarTrial()){
-			totalVehicleCount++;
 			if(sim.newCarTrial())
 				if(sim.smallCarTrial()){
 					idString = "SC" + numVehicleIDs;
@@ -661,7 +667,7 @@ public class CarPark {
 					totalVehicleCount++;
 					
 					if(spacesAvailable(newSmallCar)){
-						parkVehicle(newSmallCar, time, newSmallCar.getParkingTime());
+						parkVehicle(newSmallCar, time, intendedDuration);
 						numSmallCars++;
 						carParkStatus += "|S:N>P|";
 					}
@@ -706,7 +712,7 @@ public class CarPark {
 			if(spacesAvailable(newMotorCycle)){
 				numVehicleIDs++;
 				
-				parkVehicle(newMotorCycle, time, newMotorCycle.getParkingTime());
+				parkVehicle(newMotorCycle, time, intendedDuration);
 				numMotorCycles++;
 			}
 			else if(!queueFull()){
