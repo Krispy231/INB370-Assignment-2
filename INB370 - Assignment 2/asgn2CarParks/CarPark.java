@@ -40,10 +40,18 @@ import asgn2Vehicles.Vehicle;
  */
 public class CarPark {
 	
+	// CarPark variables.
+	private String parkStatus = "";
 	private int totalSpaces;
 	private int maxQueueSize;
+	ArrayList<Vehicle> satisfiedVehicles;
+	ArrayList<Vehicle> dissatifiedVehicles;	
 	
-	// Cars in general.
+	// Queue variables.
+	private int numQueuedVehicles;
+	ArrayList<Vehicle> vehiclesInQueue;
+	
+	// Normal Car variables.
 	private int maxCarSpaces;
 	private int numCars;
 	ArrayList<Vehicle> carsParked;
@@ -57,12 +65,7 @@ public class CarPark {
 	private int maxMotorCycleSpaces;
 	private int numMotorCycles;
 	ArrayList<Vehicle> motorCyclesParked;
-	
-	private int numQueuedVehicles;
-	ArrayList<Vehicle> vehiclesInQueue;
-	ArrayList<Vehicle> satisfiedVehicles; 	// Finished Parking
-	ArrayList<Vehicle> newVehicleArchive;		 // Queue too full
-	ArrayList<Vehicle> dissatifiedVehicles;		// Waited too long
+	ArrayList<Vehicle> newVehicleArchive;
 	
 	ArrayList<Vehicle> past;
 	ArrayList<Vehicle> spaces;
@@ -576,9 +579,10 @@ public class CarPark {
 	 * @throws VehicleException if vehicle creation violates constraints 
 	 */
 	public void tryProcessNewVehicles(int time,Simulator sim) throws VehicleException, SimulationException {
-		if(smallVehiclesParked.size() + vehiclesParked.size() > maxCarSpaces){
+		if((smallCarsParked.size() + carsParked.size() + motorCyclesParked.size()) >= totalSpaces){
 			throw new SimulationException("The car park is full.");
 		}
+		
 		if(sim.newCarTrial()){
 			count++;
 			if(sim.newCarTrial()){
@@ -637,16 +641,51 @@ public class CarPark {
 	 * @param v Vehicle to be removed from the car park 
 	 * @throws VehicleException if Vehicle is not parked, is in a queue, or violates timing constraints 
 	 * @throws SimulationException if vehicle is not in car park
+	 * @author Christopher Koren 
 	 */
 	public void unparkVehicle(Vehicle v,int departureTime) throws VehicleException, SimulationException {
-		if(v.vehicleState != "parked"){
+		if(v.isParked() == false){
 			throw new VehicleException("Vehicle is not parked!");
 		}
+		else if(v.isQueued()){
+			throw new VehicleException("Vehicle is currently in Queue!");
+		}
+		else if(v.getDepartureTime() < 0){
+			throw new VehicleException("Invalid deperture time!");
+		}
+		else if(v.isQueued() == false && v.isParked() == false){
+			throw new SimulationException("Vehicle doesn't exist.");
+		}
 		
-	else{
-		v.exitParkedState(departureTime);
-		vehiclesParked.remove(v);
-	}
+		if(v instanceof Car){
+			if(((Car) v).isSmall()){
+				if(smallCarsParked.contains(v)){
+					smallCarsParked.remove(v);
+					parkStatus += "|S:P>A|";
+				}
+				else if(carsParked.contains(v)){
+					carsParked.remove(v);
+					parkStatus += "|S:P>A|";
+				}
+				else{
+					throw new SimulationException("Cannot find vehicle.");
+				}
+			}
+			else{
+				carsParked.remove(v);
+				parkStatus += "|C:P>A|";
+			}
+		}
+		else if(v instanceof MotorCycle){
+			if(smallCarsParked.contains(v)){
+				smallCarsParked.remove(v);
+				parkStatus += "|M:P>A|";
+			}
+			else if(motorCyclesParked.contains(v)){
+				motorCyclesParked.remove(v);
+				parkStatus += "|M:P>A|";
+			}
+		}
 	}
 	
 	/**
