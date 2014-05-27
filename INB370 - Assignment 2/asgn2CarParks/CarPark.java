@@ -322,7 +322,7 @@ public class CarPark {
 	 * Simple status showing number of vehicles in the queue 
 	 * @return number of vehicles in the queue
 	 */
-	public static int numVehiclesInQueue() {
+	public int numVehiclesInQueue() {
 		return vehiclesInQueue.size();
 	}
 	
