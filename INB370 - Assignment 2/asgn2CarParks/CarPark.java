@@ -39,35 +39,42 @@ import asgn2Vehicles.Vehicle;
  *
  */
 public class CarPark {
-
 	
-	//private static final int maxCarSpaces = 100;
-	private int maxCarSpaces;
-	private int maxMotorCycleSpaces;
+	private int totalSpaces;
 	private int maxQueueSize;
+	
+	// Cars in general.
+	private int maxCarSpaces;
+	private int numCars;
+	ArrayList<Vehicle> carsParked;
+	
+	// Small car variables.
 	private int maxSmallCarSpaces;
+	private int numSmallCars;
+	ArrayList<Vehicle> smallCarsParked;
+	
+	// Motorcycle variables.
+	private int maxMotorCycleSpaces;
+	private int numMotorCycles;
+	ArrayList<Vehicle> motorCyclesParked;
 	
 	private int numQueuedVehicles;
-	ArrayList<Vehicle> vehiclesParked = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> smallVehiclesParked = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> vehiclesInQueue;
+	ArrayList<Vehicle> satisfiedVehicles; 	// Finished Parking
+	ArrayList<Vehicle> newVehicleArchive;		 // Queue too full
+	ArrayList<Vehicle> dissatifiedVehicles;		// Waited too long
 	
-	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> successfulParkArchive = new ArrayList<Vehicle>(); // Finished Parking
-	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();	 // Queue too full
-	ArrayList<Vehicle> failArchive = new ArrayList<Vehicle>();			 // Waited too long
-	
-	ArrayList<Vehicle> past = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> spaces = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> queue = new ArrayList<Vehicle>();
-	ArrayList<Vehicle> allVehicles = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> past;
+	ArrayList<Vehicle> spaces;
+	ArrayList<Vehicle> allVehicles;
 	
 	private String idString;
 	private int carIdCount;
 	private int motorcycleIdCount;
 	
-	private int numCars;
-	private int numSmallCars;
-	private int numMotorCycles;
+	
+	
+	
 	private int numDissatisfied;
 	private int count = 0;
 
@@ -78,6 +85,32 @@ public class CarPark {
 	public CarPark() {
 		this(Constants.DEFAULT_MAX_CAR_SPACES,Constants.DEFAULT_MAX_SMALL_CAR_SPACES,
 				Constants.DEFAULT_MAX_MOTORCYCLE_SPACES,Constants.DEFAULT_MAX_QUEUE_SIZE);
+		
+		// Initialise the parking spots avaliable.
+		maxCarSpaces = Constants.DEFAULT_MAX_CAR_SPACES - Constants.DEFAULT_MAX_SMALL_CAR_SPACES;
+		maxSmallCarSpaces = Constants.DEFAULT_MAX_SMALL_CAR_SPACES;
+		maxMotorCycleSpaces = Constants.DEFAULT_MAX_MOTORCYCLE_SPACES;
+		maxQueueSize = Constants.DEFAULT_MAX_QUEUE_SIZE;
+		totalSpaces = maxCarSpaces + maxSmallCarSpaces + maxMotorCycleSpaces;
+		
+		
+		// Arrays to hold vehicles past/present.
+		vehiclesInQueue = new ArrayList<Vehicle>(maxQueueSize);
+		satisfiedVehicles = new ArrayList<Vehicle>();
+		dissatifiedVehicles = new ArrayList<Vehicle>();
+		
+		// Arrays to hold numbers of each type of vehicle.
+		motorCyclesParked = new ArrayList<Vehicle>();
+		carsParked = new ArrayList<Vehicle>();
+		smallCarsParked = new ArrayList<Vehicle>();
+		
+		/*
+		newVehicleArchive = new ArrayList<Vehicle>();		
+		past = new ArrayList<Vehicle>();
+		spaces = new ArrayList<Vehicle>();
+		allVehicles = new ArrayList<Vehicle>();
+		*/
+		
 		
 		while (allVehicles.size() > 0)
 		{
@@ -92,13 +125,25 @@ public class CarPark {
 	 * 						 restricted to small cars
 	 * @param maxMotorCycleSpaces maximum number of spaces allocated to MotorCycles
 	 * @param maxQueueSize maximum number of vehicles allowed to queue
+	 * @author Christopher Koren
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
 	
 		this.maxCarSpaces = maxCarSpaces;
 		this.maxSmallCarSpaces = maxSmallCarSpaces;
 		this.maxMotorCycleSpaces = maxMotorCycleSpaces;
-		this.maxQueueSize = maxQueueSize;		
+		this.maxQueueSize = maxQueueSize;
+		totalSpaces = maxCarSpaces + maxSmallCarSpaces + maxMotorCycleSpaces;
+		
+		// Arrays to hold vehicles past/present.
+		vehiclesInQueue = new ArrayList<Vehicle>(maxQueueSize);
+		satisfiedVehicles = new ArrayList<Vehicle>();
+		dissatifiedVehicles = new ArrayList<Vehicle>();
+				
+		// Arrays to hold numbers of each type of vehicle.
+		motorCyclesParked = new ArrayList<Vehicle>();
+		carsParked = new ArrayList<Vehicle>();
+		smallCarsParked = new ArrayList<Vehicle>();
 	}
 
 	/**
@@ -124,7 +169,7 @@ public class CarPark {
 				
 			if (force = false)
 			{
-				successfulParkArchive.add(usedVehicle);
+				satisfiedVehicles.add(usedVehicle);
 			}
 		}
 	}
@@ -134,6 +179,7 @@ public class CarPark {
 	 * away
 	 * @param v Vehicle to be archived
 	 * @throws SimulationException if vehicle is currently queued or parked
+	 * @author Christopher Koren
 	 */
 	public void archiveNewVehicle(Vehicle v) throws SimulationException {
 		if(v.isQueued() == true){
@@ -143,7 +189,8 @@ public class CarPark {
 			throw new SimulationException("The vehicle is already parked.");
 		}
 		else{
-			failArchive.add(v);
+			dissatifiedVehicles.add(v);
+			numDissatisfied++;
 		}
 	
 	}
@@ -154,21 +201,44 @@ public class CarPark {
 	 * @throws VehicleException if one or more vehicles not in the correct state or if timing constraints are violated
 	 */
 	public void archiveQueueFailures(int time) throws VehicleException {
-		/*if(vehiclesInQueue(i).isParked()){
-		if(v.isParked()){
-		if(v.isParked()){
-			
+		
+		for(int i = 0; i < vehiclesInQueue.size(); i++){
+            if((vehiclesInQueue.get(i).isQueued() != true)){
+                    throw new VehicleException("The vehicle is not in the queue");
+            }
+            else if(time < 0 || time > Constants.CLOSING_TIME){
+                    throw new VehicleException("The vehicle has been queued for too long");
+            }
+            else{
+                    Vehicle v;
+                    v = vehiclesInQueue.get(i);
+                    /* If the vehicles been in queue for longer than the maximum queue time
+                    then leave the queue and get archived. */
+                    if((time - v.getArrivalTime()) > Constants.MAXIMUM_QUEUE_TIME){
+                    		dissatifiedVehicles.add(v);
+                            archivedVehicles.add(v);
+                            numDissatisfied++;
+                            vehiclesInQueue.remove(v);
+                            
+                            if (v instanceof Car) {
+                                    if (((Car)v).isSmall()) {
+                                            status += "|S:Q>A|";
+                                    } else {
+                                            status += "|C:Q>A|";
+                                    }
+                            } else {
+                                    status += "|M:Q>A|";
+                            }
+                    }
+           
+            }
 		}
-		else{
-			failArchive.add();
-			v.failedQueueArchive.add();
-			v.failedQueueArchive.add();
-		}*/
 	}
 	
 	/**
 	 * Simple status showing whether carPark is empty
 	 * @return true if car park empty, false otherwise
+	 * @author Christopher Koren
 	 */
 	public boolean carParkEmpty() {
 		if(getNumCars() == 0 && getNumMotorCycles() == 0)
@@ -182,9 +252,10 @@ public class CarPark {
 	/**
 	 * Simple status showing whether carPark is full
 	 * @return true if car park full, false otherwise
+	 * @author Christopher Koren
 	 */
 	public boolean carParkFull() {
-		if(getNumCars() >= maxCarSpaces)
+		if(getNumCars() >= totalSpaces)
 		{
 			return true;
 		}else{
@@ -259,27 +330,30 @@ public class CarPark {
 	/**
 	 * Simple getter for number of cars in the car park 
 	 * @return number of cars in car park, including small cars
+	 * @author Christopher Koren
 	 */
 	public int getNumCars() {
-		return vehiclesParked.size();		
+		return (numCars + numSmallCars);		
 	}
 	
 	/**
 	 * Simple getter for number of motorcycles in the car park 
 	 * @return number of MotorCycles in car park, including those occupying 
 	 * 			a small car space
+	 * @author Christopher Koren
 	 */
 	public int getNumMotorCycles() {
-		return this.numMotorCycles;
+		return numMotorCycles;
 	}
 	
 	/**
 	 * Simple getter for number of small cars in the car park 
 	 * @return number of small cars in car park, including those 
 	 * 		   not occupying a small car space. 
+	 * @author Christopher Koren
 	 */
 	public int getNumSmallCars() {
-		return this.numSmallCars;
+		return numSmallCars;
 	}
 	
 	/**
@@ -293,16 +367,17 @@ public class CarPark {
 	 * and small car S arrive (new N) and go straight into the car park<br>
 	 * 262::276::P:91::C:84::S:14::M:7::D:48::A:176::Q:9CCCCCCCCC|C:P>A||C:Q>P||S:N>P|
 	 * @return String containing current state 
+	 * @author Matthew Wheeler
 	 */
 	public String getStatus(int time) {
 		String str = time +"::"
-		+ this.count + "::" 
-		+ "P:" + this.maxCarSpaces + "::"
-		+ "C:" + this.numCars + "::S:" + this.numSmallCars 
-		+ "::M:" + this.numMotorCycles 
-		+ "::D:" + this.numDissatisfied 
-		+ "::A:" + this.successfulParkArchive.size()  
-		+ "::Q:" + this.vehiclesInQueue.size(); 
+		+ count + "::" 
+		+ "P:" + totalSpaces + "::"
+		+ "C:" + getNumCars() + "::S:" + getNumSmallCars() 
+		+ "::M:" + getNumMotorCycles() 
+		+ "::D:" + numDissatisfied 
+		+ "::A:" + satisfiedVehicles.size()  
+		+ "::Q:" + vehiclesInQueue.size(); 
 		for (Vehicle v : this.vehiclesInQueue) {
 			if (v instanceof Car) {
 				if (((Car)v).isSmall()) {
@@ -314,10 +389,8 @@ public class CarPark {
 				str += "M";
 			}
 		}
-		// for each change
-		// {
-			str += this.setVehicleMsg(null, str, str);
-		// }
+		
+		str += this.setVehicleMsg(null, str, str);
 		return str+"\n";
 	}
 	
@@ -376,6 +449,9 @@ public class CarPark {
 	 * @throws VehicleException if state is incorrect, or timing constraints are violated
 	 */
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
+		if(v.isSmall()){
+			
+		}
 	}
 
 	/**
