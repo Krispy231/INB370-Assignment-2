@@ -22,7 +22,7 @@ import asgn2Exceptions.VehicleException;
  */
 public class Car extends Vehicle {
 	
-	private static boolean isSmall; 
+	private boolean isSmall; 
 	private String vehID;
 	private int arrivalTime;
 
@@ -50,7 +50,7 @@ public class Car extends Vehicle {
 	 * car parking spaces  
 	 * @return true if small parking space, false otherwise
 	 */
-	public static boolean isSmall() {
+	public boolean isSmall() {
 		if(isSmall == true)
 		{
 			return true;
