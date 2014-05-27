@@ -48,10 +48,10 @@ public class CarPark {
 	private int maxSmallCarSpaces;
 	
 	private int numQueuedVehicles;
-	static ArrayList<Vehicle> vehiclesParked = new ArrayList<Vehicle>();
-	static ArrayList<Vehicle> smallVehiclesParked = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> vehiclesParked = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> smallVehiclesParked = new ArrayList<Vehicle>();
 	
-	static ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> successfulParkArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> failArchive = new ArrayList<Vehicle>();
@@ -104,7 +104,7 @@ public class CarPark {
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
-		if(Vehicle.isParked() == false){
+		if(v.isParked() == false){
 			throw new VehicleException("Vehicle was not parked.");
 		}
 		else if(/*Vehicle(s) are NOT in Car park*/){
@@ -140,11 +140,15 @@ public class CarPark {
 	 * @throws VehicleException if one or more vehicles not in the correct state or if timing constraints are violated
 	 */
 	public void archiveQueueFailures(int time) throws VehicleException {
-		if(isParked()){
+		if(vehiclesInQueue[i].isParked()){
+		if(v.isParked()){
+		if(v.isParked()){
 			
 		}
 		else{
-			failedQueueArchive.add();
+			failArchive.add();
+			v.failedQueueArchive.add();
+			v.failedQueueArchive.add();
 		}
 	}
 	
@@ -187,15 +191,15 @@ public class CarPark {
 		if(vehiclesInQueue.size() >= maxQueueSize){
 			throw new VehicleException("The queue is full.");
 		}
-		else if(Vehicle.vehicleState == "queued"){
+		else if(v.vehicleState == "queued"){
 			throw new VehicleException("The vehicle is already queued.");
 		}
-		else if(Vehicle.vehicleState == "parked"){
+		else if(v.vehicleState == "parked"){
 			throw new VehicleException("The vehicle is already parked.");
 		}
 		else{
 			vehiclesInQueue.add(v);
-			Vehicle.vehicleState = "queued";
+			v.vehicleState = "queued";
 		}
 	}
 	
@@ -210,12 +214,12 @@ public class CarPark {
 	 * constraints are violated
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
-		if(Vehicle.isQueued() == false){
+		if(v.isQueued() == false){
 			throw new VehicleException("Vehicle is not in queue.");
-		}else if(Vehicle.vehicleState != "queued"){
+		}else if(v.vehicleState != "queued"){
 			throw new VehicleException("Vehicle is not in queue.");
 		}
-		if(Vehicle.isQueued()){
+		if(v.isQueued()){
 			vehiclesInQueue.remove(v);
 		}
 		else{
@@ -242,8 +246,8 @@ public class CarPark {
 	 * Simple getter for number of cars in the car park 
 	 * @return number of cars in car park, including small cars
 	 */
-	public static int getNumCars() {
-		return vehiclesInCarPark.size();		
+	public int getNumCars() {
+		return vehiclesParked.size();		
 	}
 	
 	/**
@@ -339,12 +343,12 @@ public class CarPark {
 		else if(getNumSmallCars() >= maxSmallCarSpaces){
 			throw new VehicleException("No appropriate parks available.");
 		}
-		else if(Vehicle.vehicleState != "parked"){
+		else if(v.vehicleState != "parked"){
 			throw new VehicleException("Vehicle is not in the appropriate state.");
 		}
 		else{
 			int parkingTime = time;
-			Vehicle.enterParkedState(parkingTime, intendedDuration);
+			v.enterParkedState(parkingTime, intendedDuration);
 			vehiclesParked.add(v);
 		}
 	}
@@ -483,12 +487,12 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is not in car park
 	 */
 	public void unparkVehicle(Vehicle v,int departureTime) throws VehicleException, SimulationException {
-		if(Vehicle.vehicleState != "parked"){
+		if(v.vehicleState != "parked"){
 			throw new VehicleException("Vehicle is not parked!");
 		}
 		
 	else{
-		Vehicle.exitParkedState(departureTime);
+		v.exitParkedState(departureTime);
 		vehiclesParked.remove(v);
 	}
 	}

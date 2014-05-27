@@ -56,8 +56,8 @@ public abstract class Vehicle {
 	
 	boolean parked = false;
 	public boolean wasParked = false;
-	public static boolean wasQueued = false;
-	public static String vehicleState;
+	public boolean wasQueued = false;
+	public String vehicleState;
 	
 	/**
 	 * Vehicle Constructor 
@@ -243,7 +243,7 @@ public abstract class Vehicle {
 	 * Boolean status indicating whether vehicle is currently queued
 	 * @return true if vehicle is in a queued state, false otherwise 
 	 */
-	public static boolean isQueued() {
+	public boolean isQueued() {
 		if(vehicleState == "queued"){
 			wasQueued = true;
 			return true;
