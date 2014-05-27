@@ -410,6 +410,7 @@ public class CarPark {
 	/**
 	 * Simple status showing number of vehicles in the queue 
 	 * @return number of vehicles in the queue
+	 * @author Christopher Koren
 	 */
 	public int numVehiclesInQueue() {
 		return vehiclesInQueue.size();
@@ -424,20 +425,55 @@ public class CarPark {
 	 * @param intendedDuration int holding intended duration of stay 
 	 * @throws SimulationException if no suitable spaces are available for parking 
 	 * @throws VehicleException if vehicle not in the correct state or timing constraints are violated
+	 * @author Christopher Koren
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
-		if(getNumCars() >= maxCarSpaces){
+		if((getNumCars() + getNumMotorCycles()) >= totalSpaces){
 			throw new VehicleException("No parks available.");
 		} 
-		if(getNumSmallCars() >= maxSmallCarSpaces){
-			throw new VehicleException("No appropriate parks available.");
+		else if(v.isParked() || v.wasParked()){
+			throw new VehicleException("Vehicle cannot park twice.");
 		}
-		//if(v.vehicleState != "parked"){
-		//	throw new VehicleException("Vehicle is not in the appropriate state.");
-		//}
-			int parkingTime = time;
-			v.enterParkedState(parkingTime, intendedDuration);
-			vehiclesParked.add(v);
+		else if(v.getArrivalTime() > Constants.CLOSING_TIME){
+			throw new VehicleException("CarPark is closed.");
+		}
+		
+		if(v instanceof Car){
+			if(((Car) v).isSmall()){
+				numSmallCars++;
+				
+				/* If there are any small parks available, fill those first.
+				 * Else: Park in a normal park if available.
+				 */
+				if(smallCarsParked.size() < maxSmallCarSpaces){
+					smallCarsParked.add(v);
+					v.enterParkedState(time, intendedDuration);
+				}
+				else if(carsParked.size() < maxCarSpaces){
+					carsParked.add(v);
+					v.enterParkedState(time, intendedDuration);
+				}
+			}
+			else{
+				numCars++;
+				if(carsParked.size() < maxCarSpaces){
+					carsParked.add(v);
+					v.enterParkedState(time, intendedDuration);
+				}
+			}
+		}
+		
+		else if(v instanceof MotorCycle){
+			numMotorCycles++;
+			if(motorCyclesParked.size() < maxMotorCycleSpaces){
+				motorCyclesParked.add(v);
+				v.enterParkedState(time, intendedDuration);
+			}
+			else if(smallCarsParked.size() < maxSmallCarSpaces){
+				smallCarsParked.add(v);
+				v.enterParkedState(time, intendedDuration);
+			}
+		}
 	}
 
 	/**
