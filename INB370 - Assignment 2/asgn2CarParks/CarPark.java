@@ -44,43 +44,38 @@ public class CarPark {
 	private String carParkStatus = "";
 	private int totalSpaces;
 	private int maxQueueSize;
-	ArrayList<Vehicle> satisfiedVehicles;
-	ArrayList<Vehicle> dissatifiedVehicles;	
+	public int totalVehicleCount = 0;
+	private ArrayList<Vehicle> satisfiedVehicles;
+	private ArrayList<Vehicle> dissatifiedVehicles;
+	private ArrayList<Vehicle> newVehicleArchive;
+	// A list used to store all vehicle lists.
+	private ArrayList<ArrayList<Vehicle>> allVehiclesParked;
+	
+	// Vehicle Variables
+	private String idString;
+	private int numVehicleIDs;
+	private ArrayList<Vehicle> past;
 	
 	// Queue variables.
 	private int numQueuedVehicles;
-	ArrayList<Vehicle> vehiclesInQueue;
+	private ArrayList<Vehicle> vehiclesInQueue;
 	
 	// Normal Car variables.
 	private int maxCarSpaces;
 	private int numCars;
-	ArrayList<Vehicle> carsParked;
+	private ArrayList<Vehicle> carsParked;
 	
 	// Small car variables.
 	private int maxSmallCarSpaces;
 	private int numSmallCars;
-	ArrayList<Vehicle> smallCarsParked;
+	private ArrayList<Vehicle> smallCarsParked;
 	
 	// Motorcycle variables.
 	private int maxMotorCycleSpaces;
 	private int numMotorCycles;
-	ArrayList<Vehicle> motorCyclesParked;
-	ArrayList<Vehicle> newVehicleArchive;
-	
-	ArrayList<Vehicle> past;
-	ArrayList<Vehicle> spaces;
-	ArrayList<Vehicle> allVehicles;
-	
-	private String idString;
-	private int numCarIDs;
-	private int numMotorCycleIDs;
+	private ArrayList<Vehicle> motorCyclesParked;
 	
 	
-	
-	
-	private int numDissatisfied;
-	private int count = 0;
-
 	/**
 	 * CarPark constructor sets the basic size parameters. 
 	 * Uses default parameters
@@ -102,23 +97,16 @@ public class CarPark {
 		satisfiedVehicles = new ArrayList<Vehicle>();
 		dissatifiedVehicles = new ArrayList<Vehicle>();
 		
-		// Arrays to hold numbers of each type of vehicle.
+		// Arrays to hold numbers of each type of vehicle + a list to hold the lists.
 		motorCyclesParked = new ArrayList<Vehicle>();
 		carsParked = new ArrayList<Vehicle>();
 		smallCarsParked = new ArrayList<Vehicle>();
+		allVehiclesParked = new ArrayList<ArrayList<Vehicle>>();
 		
-		/*
-		newVehicleArchive = new ArrayList<Vehicle>();		
-		past = new ArrayList<Vehicle>();
-		spaces = new ArrayList<Vehicle>();
-		allVehicles = new ArrayList<Vehicle>();
-		*/
+		allVehiclesParked.add(carsParked);
+		allVehiclesParked.add(smallCarsParked);
+		allVehiclesParked.add(motorCyclesParked);
 		
-		
-		while (allVehicles.size() > 0)
-		{
-			allVehicles.remove(0);
-		}
 	}
 	
 	/**
@@ -143,10 +131,15 @@ public class CarPark {
 		satisfiedVehicles = new ArrayList<Vehicle>();
 		dissatifiedVehicles = new ArrayList<Vehicle>();
 				
-		// Arrays to hold numbers of each type of vehicle.
+		// Arrays to hold numbers of each type of vehicle + a list to hold the lists.
 		motorCyclesParked = new ArrayList<Vehicle>();
 		carsParked = new ArrayList<Vehicle>();
 		smallCarsParked = new ArrayList<Vehicle>();
+		allVehiclesParked = new ArrayList<ArrayList<Vehicle>>();
+		
+		allVehiclesParked.add(carsParked);
+		allVehiclesParked.add(smallCarsParked);
+		allVehiclesParked.add(motorCyclesParked);
 	}
 
 	/**
@@ -156,24 +149,50 @@ public class CarPark {
 	 * @param force boolean forcing departure to clear car park 
 	 * @throws VehicleException if vehicle to be archived is not in the correct state 
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
+	 * @author Christopher Koren
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
-		int v = 0;
-		while (v < allVehicles.size())
-		{	
-			Vehicle usedVehicle = allVehicles.get(v);
-			if(usedVehicle.isParked() == false){
-				throw new VehicleException("Vehicle was not parked.");
+		// Temp list used to store values grabbed from the list of Arrays.
+		ArrayList<Vehicle> checkingForDepart = new ArrayList<Vehicle>();
+		
+		for(int i = 0; i < allVehiclesParked.size(); i++){
+			for(Vehicle v : allVehiclesParked.get(i)){
+				if(v.getDepartureTime() == time){
+					checkingForDepart.add(v);
+					satisfiedVehicles.add(v);
+				}
+				else{
+					checkingForDepart.add(v);
+				}
 			}
 		
-			if(usedVehicle.isSatisfied()){
-				throw new VehicleException("The vehicle has already left the CarPark.");
+			for(Vehicle v : checkingForDepart){
+				unparkVehicle(v, time);
+
+				if (v instanceof Car) {				
+		            if (((Car)v).isSmall()) {
+		            		if (v.getDepartureTime() == time){
+		            			smallCarsParked.remove(v);
+		            			numSmallCars--;
+		            	 }
+		            } 
+		               // Else if the car is normal size.
+		            else if(((Car)v).isSmall() == false){
+		                if (v.getDepartureTime() == time){
+		                	carsParked.remove(v);
+		                	numCars--;
+		                }
+		               }
+		           } 
+		           else if (v instanceof MotorCycle){
+		        	   if (v.getDepartureTime() == time){
+		        		   motorCyclesParked.remove(v);
+		        		   numMotorCycles--;
+		        	   }
+		           }
 			}
-				
-			if (force = false)
-			{
-				satisfiedVehicles.add(usedVehicle);
-			}
+			// Once the check has been complete, clear the list for future use.
+			checkingForDepart.clear();
 		}
 	}
 		
@@ -193,15 +212,14 @@ public class CarPark {
 		}
 		else{
 			dissatifiedVehicles.add(v);
-			numDissatisfied++;
 		}
-	
 	}
 	
 	/**
 	 * Archive vehicles which have stayed in the queue too long 
 	 * @param time int holding current simulation time 
 	 * @throws VehicleException if one or more vehicles not in the correct state or if timing constraints are violated
+	 * @author Christopher Koren
 	 */
 	public void archiveQueueFailures(int time) throws VehicleException {
 		
@@ -219,18 +237,22 @@ public class CarPark {
                     then leave the queue and get archived. */
                     if((time - v.getArrivalTime()) > Constants.MAXIMUM_QUEUE_TIME){
                     		dissatifiedVehicles.add(v);
-                            archivedVehicles.add(v);
-                            numDissatisfied++;
                             vehiclesInQueue.remove(v);
                             
                             if (v instanceof Car) {
-                                    if (((Car)v).isSmall()) {
-                                            status += "|S:Q>A|";
-                                    } else {
-                                            status += "|C:Q>A|";
-                                    }
-                            } else {
-                                    status += "|M:Q>A|";
+                            	if (((Car)v).isSmall()) {
+                            		carParkStatus += "|S:Q>A|";
+                            	} 
+                                // Else if the car is normal size.
+                                else if(((Car)v).isSmall() == false){
+                                    carParkStatus += "|C:Q>A|";
+                                }
+                            } 
+                            else if (v instanceof MotorCycle){
+                            	carParkStatus += "|M:Q>A|";
+                            }
+                            else{
+                            	throw new VehicleException("Invalid vehicle types.");
                             }
                     }
            
@@ -300,31 +322,33 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is not in queue 
 	 * @throws VehicleException if the vehicle is in an incorrect state or timing 
 	 * constraints are violated
+	 * @author Christopher Koren
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
 		if(v.isQueued() == false){
 			throw new VehicleException("Vehicle is not in queue.");
-		}else if(v.vehicleState != "queued"){
-			throw new VehicleException("Vehicle is not in queue.");
 		}
-		if(v.isQueued()){
-			vehiclesInQueue.remove(v);
+		else if(exitTime < 0){
+			throw new VehicleException("Vehicle cannot exit at a negative time.");
 		}
-		else{
-			
+		else if(exitTime> Constants.CLOSING_TIME){
+			throw new VehicleException("Car Park is closed.");
 		}
+		v.exitQueuedState(exitTime);
+		vehiclesInQueue.remove(v);
 	}
 	
 	/**
 	 * State dump intended for use in logging the final state of the carpark
 	 * All spaces and queue positions should be empty and so we dump the archive
 	 * @return String containing dump of final carpark state 
+	 * @author Matthew Wheeler
 	 */
 	public String finalState() {
 		String str = "Vehicles Processed: count:" + 
-				this.count + ", logged: " + this.past.size() 
+				this.totalVehicleCount + ", logged: " + this.dissatifiedVehicles.size() 
 				+ "\nVehicle Record: \n";
-		for (Vehicle v : this.past) {
+		for (Vehicle v : this.dissatifiedVehicles) {
 			str += v.toString() + "\n\n";
 		}
 		return str + "\n";
@@ -374,11 +398,11 @@ public class CarPark {
 	 */
 	public String getStatus(int time) {
 		String str = time +"::"
-		+ count + "::" 
+		+ totalVehicleCount + "::" 
 		+ "P:" + totalSpaces + "::"
 		+ "C:" + getNumCars() + "::S:" + getNumSmallCars() 
 		+ "::M:" + getNumMotorCycles() 
-		+ "::D:" + numDissatisfied 
+		+ "::D:" + dissatifiedVehicles.size()
 		+ "::A:" + satisfiedVehicles.size()  
 		+ "::Q:" + vehiclesInQueue.size(); 
 		for (Vehicle v : this.vehiclesInQueue) {
@@ -619,14 +643,14 @@ public class CarPark {
 		}
 		
 		if(sim.newCarTrial()){
-			count++;
+			totalVehicleCount++;
 			if(sim.newCarTrial())
 				if(sim.smallCarTrial()){
-					idString = "SC" + numCarIDs;
+					idString = "SC" + numVehicleIDs;
 					Vehicle newSmallCar = new Car(idString, time, true);
 					
-					numCarIDs++;
-					count++;
+					numVehicleIDs++;
+					totalVehicleCount++;
 					
 					if(spacesAvailable(newSmallCar)){
 						parkVehicle(newSmallCar, time, newSmallCar.getParkingTime());
@@ -643,11 +667,11 @@ public class CarPark {
 					}
 				}
 				else{
-					idString = "C" + numCarIDs;
+					idString = "C" + numVehicleIDs;
 					
 					Vehicle newCar = new Car(idString, time, false);
-					numCarIDs++;
-					count++;
+					numVehicleIDs++;
+					totalVehicleCount++;
 					
 					if(spacesAvailable(newCar)){
 						parkVehicle(newCar, time, newCar.getParkingTime());
@@ -665,14 +689,14 @@ public class CarPark {
 				}
 			}
 		else if(sim.motorCycleTrial()){
-			idString = "MC" + numMotorCycleIDs;
+			idString = "MC" + numVehicleIDs;
 			Vehicle newMotorCycle = new MotorCycle(idString, time);
 			
-			numMotorCycleIDs++;
-			count++;
+			numVehicleIDs++;
+			totalVehicleCount++;
 			
 			if(spacesAvailable(newMotorCycle)){
-				numMotorCycleIDs++;
+				numVehicleIDs++;
 				
 				parkVehicle(newMotorCycle, time, newMotorCycle.getParkingTime());
 				numMotorCycles++;
