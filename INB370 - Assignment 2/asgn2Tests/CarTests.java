@@ -21,10 +21,10 @@ import asgn2Vehicles.Car;
 
 /**
  * @author hogan
- *
+ * 
  */
 public class CarTests {
-	
+
 	public Car testCar;
 
 	/**
@@ -55,21 +55,25 @@ public class CarTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
-	 * @throws VehicleException 
+	 * Test method for
+	 * {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
+	 * 
+	 * @throws VehicleException
 	 * @author Matthew Wheeler
 	 */
-	@Test (expected = VehicleException.class)
+	@Test(expected = VehicleException.class)
 	public void testArrivalTimeBefore() throws VehicleException {
 		String vehID = "test1";
 		int arrivalTime = -1;
 		boolean small = true;
 		testCar = new Car(vehID, arrivalTime, small);
 	}
-	
+
 	/**
-	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
-	 * @throws VehicleException 
+	 * Test method for
+	 * {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
+	 * 
+	 * @throws VehicleException
 	 * @author Matthew Wheeler
 	 */
 	@Test
@@ -79,10 +83,12 @@ public class CarTests {
 		boolean small = true;
 		testCar = new Car(vehID, arrivalTime, small);
 	}
-	
+
 	/**
-	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
-	 * @throws VehicleException 
+	 * Test method for
+	 * {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
+	 * 
+	 * @throws VehicleException
 	 * @author Christopher Koren
 	 */
 	@Test
@@ -95,20 +101,22 @@ public class CarTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * 
 	 * @throws VehicleException
-	 * @author Christopher Koren 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testIsSmallTrue() throws VehicleException {
 		String vehID = "testSmallTrue";
 		int arrivalTime = 11;
-		boolean small = true;	
+		boolean small = true;
 		testCar = new Car("vehID", arrivalTime, small);
 		assertTrue(testCar.isSmall());
 	}
-	
+
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * 
 	 * @throws VehicleException
 	 * @author Matthew Wheeler
 	 */
@@ -116,7 +124,7 @@ public class CarTests {
 	public void testIsSmallFalse() throws VehicleException {
 		String vehID = "testSmallFalse";
 		int arrivalTime = 11;
-		boolean small = false;	
+		boolean small = false;
 		testCar = new Car("vehID", arrivalTime, small);
 		assertFalse(testCar.isSmall());
 	}

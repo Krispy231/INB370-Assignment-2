@@ -28,41 +28,40 @@ import asgn2Vehicles.Vehicle;
 
 /**
  * @author hogan
- *
+ * 
  */
 
 public class CarParkTests {
-	
+
 	public Car testCar;
 	public Car testSmallCar;
 	public MotorCycle testMotorCycle;
-	
+
 	public CarPark carParkTest;
 	int maxCarSpaces = 100;
 	int maxSmallCarSpaces = 30;
-	int maxMotorCycleSpaces= 10;
+	int maxMotorCycleSpaces = 10;
 	int maxQueueSize = 5;
-	
+
 	String vehicleStatus;
-	
+
 	ArrayList<Vehicle> vehiclesInCarPark = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> vehiclesInQueue = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> departArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
-	
-	
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		carParkTest = new CarPark(maxCarSpaces, maxSmallCarSpaces, maxMotorCycleSpaces, maxQueueSize);
+		carParkTest = new CarPark(maxCarSpaces, maxSmallCarSpaces,
+				maxMotorCycleSpaces, maxQueueSize);
 		String vehID = "01", veh2ID = "02", veh3ID = "03";
 		int arrivalTime = 10, arrivalTime2 = 15, arrivalTime3 = 20;
 		boolean small = false, small2 = true;
-		
+
 		testCar = new Car(vehID, arrivalTime, small);
 		testSmallCar = new Car(veh2ID, arrivalTime2, small2);
 		testMotorCycle = new MotorCycle(veh3ID, arrivalTime3);
@@ -76,14 +75,16 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
-	 */ 
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 */
 	@Test
 	public void testArchiveDepartingVehiclesIsParked() {
 	}
-	
+
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
 	 */
 	@Test
 	public void testArchiveNewVehicle() {
@@ -92,10 +93,11 @@ public class CarParkTests {
 
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * 
 	 * @author Matthew Wheeler
-	 * @throws VehicleException 
+	 * @throws VehicleException
 	 */
-	@Test (expected = VehicleException.class)
+	@Test(expected = VehicleException.class)
 	public void testArchiveQueueFailuresBeforeZero() throws VehicleException {
 		int time = -1;
 		carParkTest.archiveQueueFailures(time);
@@ -103,59 +105,64 @@ public class CarParkTests {
 
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * 
 	 * @author Matthew Wheeler
-	 * @throws VehicleException 
+	 * @throws VehicleException
 	 */
 	@Test
 	public void testArchiveQueueFailuresAtZero() throws VehicleException {
 		int time = 0;
 		carParkTest.archiveQueueFailures(time);
 	}
-	
+
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * 
 	 * @author Matthew Wheeler
-	 * @throws VehicleException 
+	 * @throws VehicleException
 	 */
 	@Test
 	public void testArchiveQueueFailuresAfterZero() throws VehicleException {
 		int time = 1;
 		carParkTest.archiveQueueFailures(time);
 	}
-	
+
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * 
 	 * @author Matthew Wheeler
-	 * @throws VehicleException 
+	 * @throws VehicleException
 	 */
 	@Test
 	public void testArchiveQueueFailuresBeforeClosing() throws VehicleException {
 		int time = Constants.CLOSING_TIME - 1;
 		carParkTest.archiveQueueFailures(time);
 	}
-	
+
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * 
 	 * @author Matthew Wheeler
-	 * @throws VehicleException 
+	 * @throws VehicleException
 	 */
-	@Test (expected = VehicleException.class)
+	@Test(expected = VehicleException.class)
 	public void testArchiveQueueFailuresAtClosing() throws VehicleException {
 		int time = Constants.CLOSING_TIME;
 		carParkTest.archiveQueueFailures(time);
 	}
-	
+
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * 
 	 * @author Matthew Wheeler
-	 * @throws VehicleException 
+	 * @throws VehicleException
 	 */
-	@Test (expected = VehicleException.class)
+	@Test(expected = VehicleException.class)
 	public void testArchiveQueueFailuresAfterClosing() throws VehicleException {
 		int time = Constants.CLOSING_TIME + 1;
 		carParkTest.archiveQueueFailures(time);
 	}
-	
+
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#carParkEmpty()}.
 	 */
@@ -173,7 +180,8 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#enterQueue(asgn2Vehicles.Vehicle)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#enterQueue(asgn2Vehicles.Vehicle)}.
 	 */
 	@Test
 	public void testEnterQueue() {
@@ -181,7 +189,8 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
 	 */
 	@Test
 	public void testExitQueue() {
@@ -241,12 +250,14 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testNumVehiclesInQueue() {
-		//assertEquals(CarPark.numVehiclesInQueue())
+		// assertEquals(CarPark.numVehiclesInQueue())
 		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#parkVehicle(asgn2Vehicles.Vehicle, int, int)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#parkVehicle(asgn2Vehicles.Vehicle, int, int)}
+	 * .
 	 */
 	@Test
 	public void testParkVehicle() {
@@ -254,7 +265,9 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#processQueue(int, asgn2Simulators.Simulator)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#processQueue(int, asgn2Simulators.Simulator)}
+	 * .
 	 */
 	@Test
 	public void testProcessQueue() {
@@ -278,7 +291,8 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#spacesAvailable(asgn2Vehicles.Vehicle)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#spacesAvailable(asgn2Vehicles.Vehicle)}.
 	 */
 	@Test
 	public void testSpacesAvailable() {
@@ -294,7 +308,9 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#tryProcessNewVehicles(int, asgn2Simulators.Simulator)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#tryProcessNewVehicles(int, asgn2Simulators.Simulator)}
+	 * .
 	 */
 	@Test
 	public void testTryProcessNewVehicles() {
@@ -302,7 +318,8 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#unparkVehicle(asgn2Vehicles.Vehicle, int)}.
+	 * Test method for
+	 * {@link asgn2CarParks.CarPark#unparkVehicle(asgn2Vehicles.Vehicle, int)}.
 	 */
 	@Test
 	public void testUnparkVehicle() {

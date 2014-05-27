@@ -1,0 +1,31 @@
+Student Name: Matthew Wheeler
+Student Number: 08887021
+
+Student Name: Chris Koren
+Student Number: 08852871
+
+
+Matthew's main work was the GUI, with a few methods and implemented in the CarPark class and some of the tests.
+Chris's main work was the Vehicles and CarPark, with some tests being implemented by him.
+
+We both agree with what our work is.
+
+
+Known Bugs:
+The code enters an infinite loop after 1020 Vehicles
+The GUI "Start" button does nothing.
+The run.bat doesn't work
+
+
+Things Missing:
+Github kept removing most of Matthew's Updates from Friday night (24/5) to Tuesday (27/5).
+All the GUI tests and half of the simulation Tests are unimplemented.
+
+
+File Path:
+./INB370 - Assignment 2/asgn2Simulators/GUISimulator
+
+
+To run:
+1. Open the GUISimulator in Eclispe
+2. Run the GuiSimulator
