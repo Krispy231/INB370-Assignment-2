@@ -71,7 +71,7 @@ public class CarTests {
 	 */
 	@Test
 	public void testIsSmall() throws VehicleException {	
-		assertTrue(Car.isSmall());
+		assertTrue(testCar.isSmall());
 	}
 
 }

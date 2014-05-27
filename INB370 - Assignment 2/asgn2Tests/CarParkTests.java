@@ -142,7 +142,7 @@ public class CarParkTests {
 		vehiclesInCarPark.add(3, null);
 		vehiclesInCarPark.add(4, null);
 		
-		assertEquals(5, CarPark.getNumCars());
+		assertEquals(5, carParkTest.getNumCars());
 	}
 
 	/**

@@ -75,7 +75,7 @@ public class MotorCycleTests {
 	@Test
 	public void testGetVehID() {
 		String expectedResult = "test01";
-		assertEquals(expectedResult, Vehicle.getVehID());
+		assertEquals(expectedResult, testMotorCycle.getVehID());
 	}
 
 	/**
@@ -84,42 +84,45 @@ public class MotorCycleTests {
 	@Test
 	public void testGetArrivalTime() {
 		int expectedResult = 1;
-		assertEquals(expectedResult, Vehicle.getArrivalTime());
+		assertEquals(expectedResult, testMotorCycle.getArrivalTime());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterQueuedState()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testEnterQueuedState() {
+	public void testEnterQueuedState() throws VehicleException {
 		String expectedResult = "queued";
 		
-		Vehicle.enterQueuedState();
+		testMotorCycle.enterQueuedState();
 		assertEquals(expectedResult, vehicleState);
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testExitQueuedState() {
+	public void testExitQueuedState() throws VehicleException {
 		String expectedResult = "unqueued";
 		int exitTime = 40;
 		
-		Vehicle.exitQueuedState(exitTime);
+		testMotorCycle.exitQueuedState(exitTime);
 		assertEquals(expectedResult, vehicleState);
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testEnterParkedState() {
+	public void testEnterParkedState() throws VehicleException {
 		String expectedResult = "parked";
 		int parkingTime = 10;
 		int intendedDuration = 25;
 		
-		Vehicle.enterParkedState(parkingTime, intendedDuration)
+		testMotorCycle.enterParkedState(parkingTime, intendedDuration);
 		assertEquals(expectedResult, vehicleState);
 	}
 
@@ -133,12 +136,13 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testExitParkedState() {
+	public void testExitParkedState() throws VehicleException {
 		String expectedResult = "unparked";
 		int departureTime = 30;
-		Vehicle.exitParkedState(departureTime);
+		testMotorCycle.exitParkedState(departureTime);
 		
 		assertEquals(expectedResult, vehicleState);
 	}
@@ -149,7 +153,7 @@ public class MotorCycleTests {
 	@Test
 	public void testIsParked() {
 		vehicleState = "parked";
-		assertTrue(Vehicle.isParked());
+		assertTrue(testMotorCycle.isParked());
 	}
 
 	/**
@@ -158,32 +162,34 @@ public class MotorCycleTests {
 	@Test
 	public void testIsQueued() {
 		vehicleState = "queued";
-		assertTrue(Vehicle.isQueued());
+		assertTrue(testMotorCycle.isQueued());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getParkingTime()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testGetParkingTime() {
+	public void testGetParkingTime() throws VehicleException {
 		int expectedResult = 10;
 		int parkingTime = 10;
 		int intendedDuration = 20;
 		
-		Vehicle.enterParkedState(parkingTime, intendedDuration);
-		assertEquals(expectedResult, Vehicle.getParkingTime());
+		testMotorCycle.enterParkedState(parkingTime, intendedDuration);
+		assertEquals(expectedResult, testMotorCycle.getParkingTime());
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getDepartureTime()}.
+	 * @throws VehicleException 
 	 */
 	@Test
-	public void testGetDepartureTime() {
+	public void testGetDepartureTime() throws VehicleException {
 		int expectedResult = 10;
 		int departureTime = 10;
 		
-		Vehicle.exitParkedState(departureTime);
-		assertEquals(expectedResult, Vehicle.getDepartureTime());
+		testMotorCycle.exitParkedState(departureTime);
+		assertEquals(expectedResult, testMotorCycle.getDepartureTime());
 	}
 
 	/**
@@ -192,7 +198,7 @@ public class MotorCycleTests {
 	@Test
 	public void testWasQueued() {
 		boolean wasQueued = true;
-		assertTrue(Vehicle.wasQueued());
+		assertTrue(testMotorCycle.wasQueued());
 	}
 
 	/**
@@ -201,7 +207,7 @@ public class MotorCycleTests {
 	@Test
 	public void testWasParked() {
 		boolean wasParked = true;
-		assertTrue(Vehicle.wasParked());
+		assertTrue(testMotorCycle.wasParked());
 	}
 
 	/**
@@ -210,7 +216,7 @@ public class MotorCycleTests {
 	@Test
 	public void testIsSatisfied() {
 		boolean wasQueued = true;
-		assertTrue(Vehicle.isSatisfied());
+		assertTrue(testMotorCycle.isSatisfied());
 	}
 
 	/**
