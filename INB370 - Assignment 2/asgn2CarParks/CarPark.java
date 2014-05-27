@@ -507,8 +507,9 @@ public class CarPark {
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
 		archiveQueueFailures(time);
         
-		final int tempQueueSize = vehiclesInQueue.size();
+		final int tempQueueSize = vehiclesInQueue.size();	
         Vehicle v;
+        endLoop:
         for (int i = 0; i < tempQueueSize; i++){
 
                 v = vehiclesInQueue.get(0);
@@ -542,8 +543,11 @@ public class CarPark {
                         else{
                         	carParkStatus += "|M:Q>P|";
                         }
+                        
                 }
-                
+                else{
+                	break endLoop;
+                }                
         }
 	}
 
