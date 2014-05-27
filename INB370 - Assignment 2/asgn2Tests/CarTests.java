@@ -29,6 +29,7 @@ public class CarTests {
 
 	/**
 	 * @throws java.lang.Exception
+	 * @author Christopher Koren
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -56,6 +57,7 @@ public class CarTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testCar() throws VehicleException {
@@ -67,7 +69,8 @@ public class CarTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
-	 * @throws VehicleException 
+	 * @throws VehicleException
+	 * @author Christopher Koren 
 	 */
 	@Test
 	public void testIsSmall() throws VehicleException {	

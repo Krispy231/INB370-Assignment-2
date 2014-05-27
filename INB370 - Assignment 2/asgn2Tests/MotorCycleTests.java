@@ -35,6 +35,7 @@ public class MotorCycleTests {
 
 	/**
 	 * @throws java.lang.Exception
+	 * @author Christopher Koren
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -51,6 +52,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.MotorCycle#MotorCycle(java.lang.String, int)}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testMotorCycle() throws VehicleException {
@@ -63,6 +65,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#Vehicle(java.lang.String, int)}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testVehicle() throws VehicleException {
@@ -71,6 +74,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getVehID()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testGetVehID() {
@@ -80,6 +84,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getArrivalTime()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testGetArrivalTime() {
@@ -90,6 +95,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterQueuedState()}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testEnterQueuedState() throws VehicleException {
@@ -102,6 +108,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testExitQueuedState() throws VehicleException {
@@ -115,6 +122,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testEnterParkedState() throws VehicleException {
@@ -128,6 +136,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testExitParkedStateInt() {
@@ -137,6 +146,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState()}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testExitParkedState() throws VehicleException {
@@ -149,6 +159,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#isParked()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testIsParked() {
@@ -158,6 +169,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#isQueued()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testIsQueued() {
@@ -168,6 +180,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getParkingTime()}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testGetParkingTime() throws VehicleException {
@@ -182,6 +195,7 @@ public class MotorCycleTests {
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#getDepartureTime()}.
 	 * @throws VehicleException 
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testGetDepartureTime() throws VehicleException {
@@ -194,6 +208,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#wasQueued()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testWasQueued() {
@@ -203,6 +218,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#wasParked()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testWasParked() {
@@ -212,6 +228,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testIsSatisfied() {
@@ -221,6 +238,7 @@ public class MotorCycleTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Vehicle#toString()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testToString() {
