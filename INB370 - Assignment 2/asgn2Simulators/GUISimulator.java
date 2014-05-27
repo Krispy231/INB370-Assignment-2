@@ -13,6 +13,7 @@ package asgn2Simulators;
 import javax.swing.*; 
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.*;
 import org.jfree.chart.plot.XYPlot;
@@ -22,6 +23,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -29,13 +31,18 @@ import java.awt.event.ActionListener;
  *
  */
 @SuppressWarnings("serial")
-public class GUISimulator extends JFrame implements Runnable {
+public class GUISimulator extends JFrame implements Runnable,ActionListener {
 	
 	// Variables
 	//private JFreeChart carParkChart;\
 	private int editBoxLength = 8;
 	private int editBoxHeight = 20;
 	private int textBoxHeight = 20;
+	
+	JFrame guiCarPark = new JFrame();
+	JPanel pnlInput = new JPanel();
+	JPanel pnlParkChart = createParkPanel();
+	
 	
 	
 	/**
@@ -49,16 +56,9 @@ public class GUISimulator extends JFrame implements Runnable {
 
 	private ActionListener actStart(){
 		System.out.println("Button pressed");
+		run();
 		return null;
 		
-	}
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
-	@Override
-	public void run() {
-		System.out.println("Running the program.");
-
 	}
 
 	/**
@@ -128,7 +128,6 @@ public class GUISimulator extends JFrame implements Runnable {
     }
 	public GUISimulator()
 	{
-		JFrame guiCarPark = new JFrame();
 		
 		// Exit program code
 		guiCarPark.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -148,7 +147,6 @@ public class GUISimulator extends JFrame implements Runnable {
 		
 		
 		// Panel
-		final JPanel pnlInput = new JPanel();
 		pnlInput.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 
 				1, true), "Car Park"));
 		
@@ -250,29 +248,46 @@ public class GUISimulator extends JFrame implements Runnable {
 		pnlInput.add(edtIntendedStayMean);
 		
 		pnlInput.setVisible(true);
-		pnlInput.setPreferredSize(new Dimension(400,100));
+		pnlInput.setPreferredSize(new Dimension(400,120));
 		
 		// Start button
 		JButton btnstart = new JButton("Start");
 		btnstart.addActionListener(actStart());
+		btnstart.setActionCommand("Run");
 		
 		pnlInput.add(btnstart);
 		
 		// Chart		
-		JPanel pnlParkChart = createParkPanel();
 		pnlParkChart.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 
 				2, true), "Chart"));
 		pnlParkChart.setVisible(true);
 		pnlParkChart.setPreferredSize(new Dimension(400,650));
 		
 		// GUI panels
-		guiCarPark.add(pnlInput,BorderLayout.NORTH);
-		guiCarPark.add(pnlParkChart,BorderLayout.SOUTH);
 		
 		
 		
 		
 		
 	}
-
+	
+	public void actionPerformed(ActionEvent e) {
+		if ("Run".equals(e.getActionCommand()));
+		{
+			System.out.println("Button");
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	
+	@Override
+	public void run() {
+		System.out.println("Running the program.");
+		guiCarPark.add(pnlInput,BorderLayout.NORTH);
+		guiCarPark.add(pnlParkChart,BorderLayout.SOUTH);
+	
+	}
+	
 }
