@@ -452,7 +452,7 @@ public class CarPark {
 	 * @author Christopher Koren
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
-		if((getNumCars() + getNumMotorCycles()) >= totalSpaces){
+		if((getNumCars() + getNumMotorCycles())>= totalSpaces){
 			throw new VehicleException("No parks available.");
 		} 
 		else if(v.isParked() || v.wasParked()){
@@ -471,18 +471,14 @@ public class CarPark {
 				 */
 				if(smallCarsParked.size() < maxSmallCarSpaces){
 					smallCarsParked.add(v);
-					v.enterParkedState(time, intendedDuration);
 				}
 				else if(carsParked.size() < maxCarSpaces){
 					carsParked.add(v);
-					v.enterParkedState(time, intendedDuration);
-				}
 			}
 			else{
 				numCars++;
 				if(carsParked.size() < maxCarSpaces){
 					carsParked.add(v);
-					v.enterParkedState(time, intendedDuration);
 				}
 			}
 		}
@@ -491,13 +487,15 @@ public class CarPark {
 			numMotorCycles++;
 			if(motorCyclesParked.size() < maxMotorCycleSpaces){
 				motorCyclesParked.add(v);
-				v.enterParkedState(time, intendedDuration);
 			}
 			else if(smallCarsParked.size() < maxSmallCarSpaces){
 				smallCarsParked.add(v);
-				v.enterParkedState(time, intendedDuration);
 			}
+			
 		}
+			
+		}
+		v.enterParkedState(time, intendedDuration);
 	}
 
 	/**
@@ -657,6 +655,8 @@ public class CarPark {
 			throw new VehicleException("Invalid timing constraints.");
 		}
 		
+
+		System.out.println(totalVehicleCount);
 		if(sim.newCarTrial()){
 			if(sim.newCarTrial())
 				if(sim.smallCarTrial()){
