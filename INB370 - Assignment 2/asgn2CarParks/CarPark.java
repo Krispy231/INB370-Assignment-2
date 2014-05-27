@@ -486,11 +486,46 @@ public class CarPark {
 	 * @param time int holding current simulation time 
 	 * @throws SimulationException if no suitable spaces available when parking attempted
 	 * @throws VehicleException if state is incorrect, or timing constraints are violated
+	 * @author Christopher Koren
 	 */
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
-		if(v.isSmall()){
-			
-		}
+		archiveQueueFailures(time);
+        
+        Vehicle v;
+        for (int i = 0; i < vehiclesInQueue.size(); i++){
+
+                v = vehiclesInQueue.get(0);
+                if (!v.isQueued()){
+                        throw new VehicleException("The vehicle is not in queue.");
+                }
+                else if (time < 0){
+                        throw new VehicleException("Time cannot be negative.");
+                }
+                else if(v.getArrivalTime() > Constants.CLOSING_TIME){
+                	throw new VehicleException("Carpark is closed.");
+                }
+                
+                // If there is an available space, park the vehicle.
+                else if (spacesAvailable(v)){  
+                        exitQueue(v, time);
+                        parkVehicle(v, time, sim.setDuration());
+                       
+                        if (v instanceof Car){
+                                if (((Car)v).isSmall()){
+                                        carParkStatus += "|S:Q>P|";
+                                }
+                                else{
+                                	carParkStatus += "|C:Q>P|";
+                                }
+                        }
+                        else{
+                        	carParkStatus += "|M:Q>P|";
+                        }
+                }
+                else if(!spacesAvailable(v)){
+                	throw new SimulationException("There are no suitable spaces to park the first in queue");
+                }
+        }
 	}
 
 	/**
