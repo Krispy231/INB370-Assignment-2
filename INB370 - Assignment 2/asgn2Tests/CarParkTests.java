@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import asgn2CarParks.CarPark;
+import asgn2Vehicles.Car;
+import asgn2Vehicles.MotorCycle;
 import asgn2Vehicles.Vehicle;
 
 /**
@@ -27,6 +29,10 @@ import asgn2Vehicles.Vehicle;
  */
 
 public class CarParkTests {
+	
+	public Car testCar;
+	public Car testSmallCar;
+	public MotorCycle testMotorCycle;
 	
 	public CarPark carParkTest;
 	int maxCarSpaces = 100;
@@ -42,12 +48,21 @@ public class CarParkTests {
 	ArrayList<Vehicle> newVehicleArchive = new ArrayList<Vehicle>();
 	ArrayList<Vehicle> failedQueueArchive = new ArrayList<Vehicle>();
 	
+	
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		carParkTest = new CarPark(maxCarSpaces, maxSmallCarSpaces, maxMotorCycleSpaces, maxQueueSize);
+		String vehID = "01", veh2ID = "02", veh3ID = "03";
+		int arrivalTime = 10, arrivalTime2 = 15, arrivalTime3 = 20;
+		boolean small = false, small2 = true;
+		
+		testCar = new Car(vehID, arrivalTime, small);
+		testSmallCar = new Car(veh2ID, arrivalTime2, small2);
+		testMotorCycle = new MotorCycle(veh3ID, arrivalTime3);
 	}
 
 	/**
@@ -98,11 +113,11 @@ public class CarParkTests {
 		vehiclesInCarPark.clear();
 		maxCarSpaces = 5;
 		
-		vehiclesInCarPark.add(0, null);
-		vehiclesInCarPark.add(1, null);
-		vehiclesInCarPark.add(2, null);
-		vehiclesInCarPark.add(3, null);
-		vehiclesInCarPark.add(4, null);
+		vehiclesInCarPark.add(0, testCar);
+		vehiclesInCarPark.add(1, testSmallCar);
+		vehiclesInCarPark.add(2, testCar);
+		vehiclesInCarPark.add(3, testCar);
+		vehiclesInCarPark.add(4, testCar);
 		
 		assertEquals(5, vehiclesInCarPark.size());
 	}
@@ -112,7 +127,7 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testEnterQueue() {
-		fail("Not yet implemented"); // TODO
+		//
 	}
 
 	/**
@@ -133,6 +148,7 @@ public class CarParkTests {
 
 	/**
 	 * Test method for {@link asgn2CarParks.CarPark#getNumCars()}.
+	 * @author Christopher Koren
 	 */
 	@Test
 	public void testGetNumCars() {
@@ -150,7 +166,9 @@ public class CarParkTests {
 	 */
 	@Test
 	public void testGetNumMotorCycles() {
-		fail("Not yet implemented"); // TODO
+		int numMotorCycles = 3;
+		
+		assertEquals(3, getNumMotorCycles());
 	}
 
 	/**
