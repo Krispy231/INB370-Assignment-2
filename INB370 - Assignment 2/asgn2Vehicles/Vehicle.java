@@ -95,7 +95,6 @@ public abstract class Vehicle {
 	 */
 	public void enterParkedState(int parkingTime, int intendedDuration) throws VehicleException {
 		exitTime = parkingTime + intendedDuration;
-		System.out.println(vehicleState);
 		
 		this.parkingTime = parkingTime;
 		//this.intendedDuration = intendedDuration;

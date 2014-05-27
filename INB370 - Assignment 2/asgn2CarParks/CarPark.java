@@ -452,10 +452,7 @@ public class CarPark {
 	 * @author Christopher Koren
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
-		if((getNumCars() + getNumMotorCycles()) >= totalSpaces){
-			throw new VehicleException("No parks available.");
-		} 
-		else if(v.isParked() || v.wasParked()){
+		if(v.isParked() || v.wasParked()){
 			throw new VehicleException("Vehicle cannot park twice.");
 		}
 		else if(v.getArrivalTime() > Constants.CLOSING_TIME){
@@ -471,18 +468,14 @@ public class CarPark {
 				 */
 				if(smallCarsParked.size() < maxSmallCarSpaces){
 					smallCarsParked.add(v);
-					v.enterParkedState(time, intendedDuration);
 				}
 				else if(carsParked.size() < maxCarSpaces){
 					carsParked.add(v);
-					v.enterParkedState(time, intendedDuration);
-				}
 			}
 			else{
 				numCars++;
 				if(carsParked.size() < maxCarSpaces){
 					carsParked.add(v);
-					v.enterParkedState(time, intendedDuration);
 				}
 			}
 		}
@@ -491,13 +484,15 @@ public class CarPark {
 			numMotorCycles++;
 			if(motorCyclesParked.size() < maxMotorCycleSpaces){
 				motorCyclesParked.add(v);
-				v.enterParkedState(time, intendedDuration);
 			}
 			else if(smallCarsParked.size() < maxSmallCarSpaces){
 				smallCarsParked.add(v);
-				v.enterParkedState(time, intendedDuration);
 			}
+			
 		}
+			
+		}
+		v.enterParkedState(time, intendedDuration);
 	}
 
 	/**
@@ -514,7 +509,6 @@ public class CarPark {
         
 		final int tempQueueSize = vehiclesInQueue.size();
         Vehicle v;
-        outerloop:
         for (int i = 0; i < tempQueueSize; i++){
 
                 v = vehiclesInQueue.get(0);
@@ -531,7 +525,7 @@ public class CarPark {
                 // If there is an available space, park the vehicle.
                 else if (spacesAvailable(v)){  
                 		if (!spacesAvailable(v)){
-                			throw new SimulationException("No suitable parkin places.");
+                			throw new SimulationException("No suitable parking places.");
                 		}
                 		
                         exitQueue(v, time);
@@ -549,9 +543,7 @@ public class CarPark {
                         	carParkStatus += "|M:Q>P|";
                         }
                 }
-                else{
-                	 break outerloop;
-                }
+                
         }
 	}
 
@@ -657,6 +649,8 @@ public class CarPark {
 			throw new VehicleException("Invalid timing constraints.");
 		}
 		
+
+		System.out.println(totalVehicleCount);
 		if(sim.newCarTrial()){
 			if(sim.newCarTrial())
 				if(sim.smallCarTrial()){
